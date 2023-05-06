@@ -1,7 +1,5 @@
-import 'package:book_app/main_screen.dart';
-import 'package:book_app/onboaring_screen/onboarding_screen.dart';
-import 'package:book_app/sign_in.dart';
-import 'package:book_app/sign_up.dart';
+import 'package:book_app/routes.dart';
+import 'package:book_app/theme/theming.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,11 +23,12 @@ class BookApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-      ),
+      // darkTheme: customDarkTheme(),
+      // theme: customLightTheme(),
+      // themeMode: ThemeMode.system,
+      theme: themeData,
       debugShowCheckedModeBanner: false,
-      home: const OnBoarding(),
+      onGenerateRoute: Routes().generateRoute,
     );
   }
 }

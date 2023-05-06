@@ -1,3 +1,4 @@
+import 'package:book_app/theme/color.dart';
 import 'package:flutter/material.dart';
 
 class BuildPage extends StatelessWidget {
@@ -17,29 +18,17 @@ class BuildPage extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          title,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.teal.shade700,
-            fontSize: 40,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        Text(title,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headlineMedium),
         const SizedBox(
           height: 20,
         ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Text(
-            subtitle,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Colors.grey,
-              fontSize: 18,
-              height: 1.5,
-            ),
-          ),
+          child: Text(subtitle,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium),
         ),
         const SizedBox(
           height: 30,
