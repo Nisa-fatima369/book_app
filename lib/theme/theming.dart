@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:book_app/theme/color.dart';
 
@@ -5,6 +7,7 @@ import 'package:book_app/theme/color.dart';
 
 ThemeData themeData = ThemeData(
   // fontFamily: gilroyFontFamily,
+  
   visualDensity: VisualDensity.adaptivePlatformDensity,
   colorScheme: ColorScheme.fromSwatch().copyWith(
     primary: AppColors.selectedColor,
@@ -19,14 +22,21 @@ ThemeData themeData = ThemeData(
     color: AppColors.selectedColor,
     size: 26,
   ),
-  buttonTheme: ButtonThemeData(
-    buttonColor: AppColors.selectedColor,
-    // focusColor: AppColors.selectedColor,
-    textTheme: ButtonTextTheme.normal,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10.0),
-    ),
-  ),
+  textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(
+    backgroundColor: AppColors.selectedColor,
+    
+
+           
+          )),
+  // buttonTheme: ButtonThemeData(
+  //   buttonColor: AppColors.primary,
+  //   // focusColor: AppColors.selectedColor,
+  //   textTheme: ButtonTextTheme.normal,
+  //   shape: RoundedRectangleBorder(
+  //     borderRadius: BorderRadius.circular(16.0),
+  //   ),
+  // ),
+  
   textTheme: const TextTheme(
     headlineMedium: TextStyle(
       color: AppColors.selectedColor,
@@ -55,10 +65,11 @@ ThemeData themeData = ThemeData(
       fontSize: 20,
     ),
   ),
+  
 
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     type: BottomNavigationBarType.fixed,
-    selectedItemColor: AppColors.mainColor,
+    selectedItemColor: AppColors.primary,
   ),
   inputDecorationTheme: InputDecorationTheme(
     floatingLabelStyle: const TextStyle(color: AppColors.selectedColor),

@@ -1,5 +1,8 @@
 import 'package:book_app/theme/color.dart';
+import 'package:book_app/widgets/list_utils.dart';
 import 'package:book_app/widgets/reuse_textfield.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
+
 import 'package:flutter/material.dart';
 import 'package:book_app/widgets/textfield.dart';
 import 'package:book_app/routes.dart';
@@ -12,10 +15,14 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+   String? departmentvalue;
+    String? semestervalue;
   final TextEditingController _regNoController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+   
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
@@ -69,7 +76,87 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                     SizedBox(height: size.height * 0.005),
-                    ReuseTextFields(hintText: '', onTap: () {}),
+  DropdownButtonHideUnderline(
+                      child: DropdownButton2<String>(
+        
+                        isExpanded: true,
+                       
+                        
+                     
+                        value: departmentvalue,
+                           items: departmentlist
+                            .map((dep) => DropdownMenuItem(
+                                  value: dep,
+                                  child: Text(
+                                    dep,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ))
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            departmentvalue = value.toString();
+                          });
+                        },
+                        buttonStyleData:  ButtonStyleData(
+                         
+                          height: 40,
+                          width: size.width*09,
+                        ),
+                        dropdownStyleData: const DropdownStyleData(
+                          maxHeight: 200,
+                        ),
+                        menuItemStyleData: const MenuItemStyleData(
+                          height: 40,
+                        ),
+                        dropdownSearchData: DropdownSearchData(
+                          searchController: searchController,
+                          searchInnerWidgetHeight: 50,
+                          searchInnerWidget: Container(
+                            height: 50,
+                            padding: const EdgeInsets.only(
+                              top: 8,
+                              bottom: 4,
+                              right: 8,
+                              left: 8,
+                            ),
+                            child: TextFormField(
+                              expands: true,
+                              maxLines: null,
+                              controller: searchController,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 8,
+                                ),
+                                hintText: 'Search for an item...',
+                                hintStyle: const TextStyle(fontSize: 12),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                          searchMatchFn: (departmentlist, searchValue) {
+                            return (departmentlist.value
+                                .toString()
+                                .toLowerCase()
+                                .contains(searchValue.toLowerCase()));
+                          },
+                        ),
+                        //This to clear the search value when you close the menu
+                        onMenuStateChange: (isOpen) {
+                          if (!isOpen) {
+                            searchController.clear();
+                          }
+                        },
+                      ),
+                    ),
+
+                    // ReuseTextFields(hintText: '', onTap: () {}, options: departmentlist,),
                     SizedBox(height: size.height * 0.025),
                     Text(
                       'Semester',
@@ -78,8 +165,57 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                     SizedBox(height: size.height * 0.005),
-                    ReuseTextFields(hintText: '', onTap: () {}),
+                    DropdownButtonFormField(
+                      decoration: const InputDecoration(
+                        //Add isDense true and zero Padding.
+                        //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+
+                        //Add more decoration as you want here
+                        //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
+                      ),
+                      isExpanded: true,
+                      //             decoration: InputDecoration(  contentPadding: EdgeInsets.symmetric(
+                      //   horizontal: 10.0,
+                      //   vertical: 3.0,
+                      // ),),
+                      hint: Text(""),
+                      validator: (value) {
+                        if (value == null) {
+                          return 'required';
+                        }
+                        return null;
+                      },
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                      ),
+                      iconEnabledColor: Theme.of(context).primaryColor,
+                      elevation: 16,
+
+                      isDense: false,
+                      alignment: AlignmentDirectional.topEnd,
+                      value: semestervalue,
+                      items: semesterlist.map((sem) {
+                        return DropdownMenuItem(
+                          value: sem,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(sem.toString()),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
+                        setState(() {
+                          semestervalue = newValue.toString();
+                        });
+                      },
+                    ),
                     SizedBox(height: size.height * 0.025),
+                  
+                   
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -147,12 +283,12 @@ _optionBottomSheet(BuildContext context, List<String> options,
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
             onTap: () {
-              controller.text = options[index];
+              controller.text = departmentlist[index];
               Navigator.pop(context);
             },
             child: ListTile(
               title: Text(
-                options[index],
+                departmentlist[index],
               ),
             ),
           );

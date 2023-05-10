@@ -117,11 +117,11 @@ class _PhoneScreenState extends State<PhoneScreen> {
                           onPressed: () {
                             Navigator.pushNamed(context, Routes.otp);
                           },
-                          child: const Padding(
+                          child:  Padding(
                             padding: EdgeInsets.all(14.0),
                             child: Text(
                               'Continue',
-                              style: TextStyle(fontSize: 16),
+                             style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
                             ),
                           ),
                         ),

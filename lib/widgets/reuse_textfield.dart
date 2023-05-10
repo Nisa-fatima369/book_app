@@ -1,3 +1,4 @@
+import 'package:book_app/widgets/list_utils.dart';
 import 'package:flutter/material.dart';
 
 class ReuseTextFields extends StatefulWidget {
@@ -5,9 +6,9 @@ class ReuseTextFields extends StatefulWidget {
     Key? key,
     required this.hintText,
     required this.onTap,
-    this.controller,
+    this.controller, required this.options,
   }) : super(key: key);
-
+final  List<String> options;
   final String hintText;
   final VoidCallback onTap;
   final TextEditingController? controller;
@@ -20,22 +21,7 @@ class _ReuseTextFieldsState extends State<ReuseTextFields> {
   final TextEditingController _optioncontroller = TextEditingController();
   bool selectedOption = false;
 
-  List<String> options = [
-    'Option 1',
-    'Option 2',
-    'Option 3',
-    'Option 4',
-    'Option 5',
-    'Option 6',
-    'Option 7',
-    'Option 8',
-    'Option 9',
-    'Option 10',
-    'Option 11',
-    'Option 12',
-    'Option 13',
-    'Option 14',
-  ];
+  
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +37,9 @@ class _ReuseTextFieldsState extends State<ReuseTextFields> {
         hintText: widget.hintText,
         suffixIcon: InkWell(
           onTap: () {
-            _optionsDialog(context, _optioncontroller, options);
+            _optionsDialog(context, _optioncontroller, widget.options);
           },
-          child: Icon(
+          child: const Icon(
             Icons.arrow_drop_down,
             color: Colors.teal,
             size: 24,
@@ -81,7 +67,7 @@ class _ReuseTextFieldsState extends State<ReuseTextFields> {
 
 _optionsDialog(
   BuildContext context,
-  TextEditingController controller,
+  TextEditingController selectedcontroller,
   List<String> options,
 ) {
   showDialog(
@@ -97,7 +83,7 @@ _optionsDialog(
             borderRadius: BorderRadius.circular(24),
           ),
           child: ListView.separated(
-            itemCount: 14,
+            itemCount: options.length,
             separatorBuilder: (BuildContext context, int index) {
               return const Divider();
             },
@@ -105,7 +91,7 @@ _optionsDialog(
               return InkWell(
                 onTap: () {
                   selectedOption = !selectedOption;
-                  controller.text = options[index];
+                  selectedcontroller.text = options[index];
                   Navigator.pop(context);
                 },
                 child: ListTile(

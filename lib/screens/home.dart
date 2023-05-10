@@ -7,9 +7,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
+        
         appBar: AppBar(
           title: Text(
             'Dashboard',
@@ -28,9 +30,11 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
         body: SingleChildScrollView(
+          
           child: Column(
+            
             children: [
-              SizedBox(height: size.height * 0.03),
+              SizedBox(height: height * 0.03),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
@@ -52,9 +56,9 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: size.height * 0.01),
+              SizedBox(height: height * 0.01),
               SizedBox(
-                height: size.height * 0.12,
+                height:  height * 0.18,
                 child: ListView.builder(
                   itemCount: 10,
                   scrollDirection: Axis.horizontal,
@@ -83,7 +87,7 @@ class HomeScreen extends StatelessWidget {
                   },
                 ),
               ),
-              SizedBox(height: size.height * 0.04),
+              SizedBox(height: height * 0.04),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
@@ -100,9 +104,9 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: size.height * 0.01),
+              SizedBox(height: height * 0.01),
               Container(
-                height: size.height * 0.25,
+                height: height * 0.28,
                 child: ListView.builder(
                   itemCount: 10,
                   scrollDirection: Axis.horizontal,
@@ -117,10 +121,10 @@ class HomeScreen extends StatelessWidget {
                               color: AppColors.titleMedium,
                               borderRadius: BorderRadius.circular(13),
                             ),
-                            height: size.height * 0.19,
-                            width: size.width * 0.27,
+                            height: height * 0.19,
+                            width: width * 0.27,
                           ),
-                          SizedBox(height: size.height * 0.005),
+                          SizedBox(height: height * 0.005),
                           Text(
                             'Book Title',
                             style: Theme.of(context).textTheme.labelLarge,
@@ -131,7 +135,7 @@ class HomeScreen extends StatelessWidget {
                   },
                 ),
               ),
-              SizedBox(height: size.height * 0.02),
+              SizedBox(height: height * 0.02),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
@@ -148,9 +152,9 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: size.height * 0.01),
+              SizedBox(height: height * 0.01),
               Container(
-                height: size.height * 0.25,
+                height: height * 0.28,
                 child: ListView.builder(
                   itemCount: 10,
                   scrollDirection: Axis.horizontal,
@@ -165,10 +169,10 @@ class HomeScreen extends StatelessWidget {
                               color: AppColors.titleMedium,
                               borderRadius: BorderRadius.circular(13),
                             ),
-                            height: size.height * 0.19,
-                            width: size.width * 0.27,
+                            height: height * 0.19,
+                            width: width * 0.27,
                           ),
-                          SizedBox(height: size.height * 0.005),
+                          SizedBox(height: height * 0.005),
                           Text(
                             'Book Title',
                             style: Theme.of(context).textTheme.labelLarge,
@@ -183,7 +187,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         bottomNavigationBar: Container(
-          height: size.height * 0.08,
+          height: MediaQuery.of(context).size.width*.14,
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(8),
@@ -200,7 +204,7 @@ class HomeScreen extends StatelessWidget {
             ),
             child: BottomNavigationBar(
               unselectedItemColor: Colors.black,
-              selectedItemColor: AppColors.mainColor,
+              selectedItemColor: AppColors.primary,
               // currentIndex: selectedIndex,
               // onTap: _animateToPage,
               showUnselectedLabels: true,

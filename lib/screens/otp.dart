@@ -14,6 +14,7 @@ class _OtpState extends State<Otp> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: SafeArea(
@@ -118,11 +119,11 @@ class _OtpState extends State<Otp> {
                           //     ),
                           //   ),
                           // ),
-                          child: const Padding(
+                          child:  Padding(
                             padding: EdgeInsets.all(14.0),
                             child: Text(
                               'Verify',
-                              style: TextStyle(fontSize: 16),
+                           style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
                             ),
                           ),
                         ),
@@ -163,8 +164,9 @@ class _OtpState extends State<Otp> {
   }
 
   Widget _textFieldOTP({bool? first, last}) {
-    return Container(
+    return SizedBox(
       height: 85,
+      width: 45,
       child: AspectRatio(
         aspectRatio: 1.0,
         child: TextField(
