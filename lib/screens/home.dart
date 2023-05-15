@@ -186,49 +186,7 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: Container(
-          height: MediaQuery.of(context).size.width*.14,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(8),
-              topLeft: Radius.circular(8),
-            ),
-            boxShadow: [
-              BoxShadow(color: Colors.black26, spreadRadius: 0, blurRadius: 6),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(10.0),
-              topRight: Radius.circular(10.0),
-            ),
-            child: BottomNavigationBar(
-              unselectedItemColor: Colors.black,
-              selectedItemColor: AppColors.primary,
-              // currentIndex: selectedIndex,
-              // onTap: _animateToPage,
-              showUnselectedLabels: true,
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.dashboard),
-                  label: 'Explore',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.add_circle_outline),
-                  label: 'exchange',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.bookmark),
-                  label: 'bookmark',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  label: 'profile',
-                ),
-              ],
-            ),
-          ),
-        ),
+       
       ),
     );
   }

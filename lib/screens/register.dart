@@ -231,7 +231,7 @@ class _RegisterState extends State<Register> {
                               //     },
                               //   ),
                               // );
-                              Navigator.pushNamed(context, Routes.homeScreen);
+                              Navigator.pushNamed(context, Routes.pageVieew);
                             },
                             // style: ButtonStyle(
                             //   backgroundColor: MaterialStateProperty.all(
