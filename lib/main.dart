@@ -1,4 +1,5 @@
 import 'package:book_app/config/routes.dart';
+import 'package:book_app/onboaring_screen/onboarding_screen.dart';
 import 'package:book_app/screens/phone_screen.dart';
 import 'package:book_app/theme/theming.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,11 @@ class BookApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // home: PhoneScreen(),
+      home: OnBoarding(),
+      
+      // darkTheme: customDarkTheme(),
+      // theme: customLightTheme(),
+      // themeMode: ThemeMode.system,
       theme: themeData,
       debugShowCheckedModeBanner: false,
       onGenerateRoute: Routes().generateRoute,

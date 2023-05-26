@@ -248,8 +248,8 @@ class _RegisterState extends State<Register> {
                           width: size.width * 0.25,
                           child: TextButton(
                             onPressed: () {
-                              Navigator.of(context)
-                                  .pushReplacementNamed(Routes.pageVieew);
+                           
+                              Navigator.pushNamed(context, Routes.pageVieew);
                             },
                             child: const Text(
                               'SUBMIT',

@@ -180,6 +180,37 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
+              Container(
+                height: height * 0.28,
+                child: ListView.builder(
+                  itemCount: 10,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.titleMedium,
+                              borderRadius: BorderRadius.circular(13),
+                            ),
+                            height: height * 0.19,
+                            width: width * 0.27,
+                          ),
+                          SizedBox(height: height * 0.005),
+                          Text(
+                            'Book Title',
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
       ),
     );
   }
