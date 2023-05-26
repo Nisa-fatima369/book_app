@@ -5,6 +5,7 @@ import 'package:book_app/screens/home.dart';
 import 'package:book_app/screens/otp.dart';
 import 'package:book_app/screens/page_view.dart';
 import 'package:book_app/screens/profile.dart';
+import 'package:book_app/screens/recently.dart';
 import 'package:book_app/screens/register.dart';
 import 'package:book_app/screens/swap.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class Routes {
   // static const String signUpScreen = '/signUpScreen';
   static const String homeScreen = 'homeScreen';
   static const String phoneScreen = 'phoneScreen';
-  // static const String welcome = 'welcome';
+  static const String recently = 'recently';
   static const String register = 'register';
   static const String otp = 'otp';
   static const String swap = 'swap';
@@ -44,9 +45,9 @@ class Routes {
       case phoneScreen:
         return MaterialPageRoute<PhoneScreen>(
             builder: (context) => PhoneScreen());
-      // case welcome:
-      //   return MaterialPageRoute<Welcome>(
-      //       builder: (context) => const Welcome());
+      case recently:
+        return MaterialPageRoute<Recently>(
+            builder: (context) => const Recently());
       case register:
         return MaterialPageRoute<Register>(
             builder: (context) => const Register());
@@ -66,7 +67,7 @@ class Routes {
         return MaterialPageRoute<PageVieew>(
             builder: (context) => const PageVieew());
       default:
-        return MaterialPageRoute(builder: (context) => const Categorry());
+        return MaterialPageRoute(builder: (context) => const Recently());
     }
   }
 }

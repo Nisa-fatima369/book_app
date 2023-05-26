@@ -22,21 +22,14 @@ ThemeData themeData = ThemeData(
     color: AppColors.selectedColor,
     size: 26,
   ),
-  textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(
-    backgroundColor: AppColors.selectedColor,
-    
-
-           
-          )),
-  // buttonTheme: ButtonThemeData(
-  //   buttonColor: AppColors.primary,
-  //   // focusColor: AppColors.selectedColor,
-  //   textTheme: ButtonTextTheme.normal,
-  //   shape: RoundedRectangleBorder(
-  //     borderRadius: BorderRadius.circular(16.0),
-  //   ),
-  // ),
-  
+  buttonTheme: ButtonThemeData(
+    buttonColor: AppColors.selectedColor,
+    // focusColor: AppColors.selectedColor,
+    textTheme: ButtonTextTheme.normal,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10.0),
+    ),
+  ),
   textTheme: const TextTheme(
     headlineMedium: TextStyle(
       color: AppColors.selectedColor,
