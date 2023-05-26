@@ -1,3 +1,4 @@
+import 'package:book_app/theme/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -37,30 +38,29 @@ class CustomField extends StatelessWidget {
       controller: controler,
       validator: validattor,
       textAlign: TextAlign.left,
-      cursorColor: Theme.of(context).primaryColor,
+      // cursorColor: Theme.of(context).primaryColor,
       textDirection: TextDirection.ltr,
       maxLines: maxline,
+
+      style: Theme.of(context).textTheme.titleMedium,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(
-          horizontal: 30,
+          horizontal: 24,
           vertical: 8,
         ),
         hintText: hint,
         prefixIcon: suffixicon,
-        hintStyle: TextStyle(
-          color: Colors.grey.shade500,
-          fontSize: 20,
-        ),
+        hintStyle: Theme.of(context).textTheme.titleMedium,
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
-          borderSide: BorderSide(color: Colors.grey.shade100),
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: AppColors.filledColor),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
-          borderSide: BorderSide(color: Colors.grey.shade100),
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: AppColors.filledColor),
         ),
-        fillColor: Colors.grey.shade200,
-        focusColor: Colors.grey.shade100,
+        fillColor: AppColors.filledColor,
+        focusColor: AppColors.filledColor,
         filled: true,
       ),
     );

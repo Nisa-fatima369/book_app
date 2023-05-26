@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:book_app/theme/color.dart';
 
@@ -7,24 +5,34 @@ import 'package:book_app/theme/color.dart';
 
 ThemeData themeData = ThemeData(
   // fontFamily: gilroyFontFamily,
-  
+
   visualDensity: VisualDensity.adaptivePlatformDensity,
   colorScheme: ColorScheme.fromSwatch().copyWith(
     primary: AppColors.selectedColor,
     secondary: AppColors.secondary,
   ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      backgroundColor: AppColors.selectedColor,
+      foregroundColor: AppColors.filledColor,
+    ),
+  ),
   appBarTheme: const AppBarTheme(
+    titleTextStyle: TextStyle(
+      color: AppColors.selectedColor,
+      fontSize: 23,
+      fontWeight: FontWeight.bold,
+    ),
     backgroundColor: Colors.transparent,
     elevation: 0,
     centerTitle: true,
   ),
   iconTheme: const IconThemeData(
     color: AppColors.selectedColor,
-    size: 26,
+    size: 28,
   ),
   buttonTheme: ButtonThemeData(
     buttonColor: AppColors.selectedColor,
-    // focusColor: AppColors.selectedColor,
     textTheme: ButtonTextTheme.normal,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),
@@ -56,14 +64,15 @@ ThemeData themeData = ThemeData(
     labelMedium: TextStyle(
       color: AppColors.selectedColor,
       fontSize: 20,
+      fontWeight: FontWeight.bold,
+    ),
+    labelSmall: TextStyle(
+      color: AppColors.primary,
+      fontWeight: FontWeight.bold,
+      fontSize: 18,
     ),
   ),
-  
 
-  bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    type: BottomNavigationBarType.fixed,
-    selectedItemColor: AppColors.primary,
-  ),
   inputDecorationTheme: InputDecorationTheme(
     floatingLabelStyle: const TextStyle(color: AppColors.selectedColor),
     labelStyle: const TextStyle(color: AppColors.selectedColor),
@@ -79,5 +88,10 @@ ThemeData themeData = ThemeData(
     border: OutlineInputBorder(
         borderSide: const BorderSide(color: AppColors.selectedColor),
         borderRadius: BorderRadius.circular(10)),
+  ),
+  dropdownMenuTheme: DropdownMenuThemeData(
+    inputDecorationTheme: InputDecorationTheme(
+      contentPadding: EdgeInsets.symmetric(horizontal: 30),
+    ),
   ),
 );

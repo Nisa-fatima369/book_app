@@ -1,6 +1,6 @@
 import 'package:book_app/theme/color.dart';
 import 'package:flutter/material.dart';
-import 'package:book_app/routes.dart';
+import 'package:book_app/config/routes.dart';
 
 class Otp extends StatefulWidget {
   const Otp({Key? key}) : super(key: key);
@@ -14,7 +14,6 @@ class _OtpState extends State<Otp> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: SafeArea(
@@ -42,9 +41,8 @@ class _OtpState extends State<Otp> {
                   decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                   ),
-                  child: Image.asset(
-                    'image/illustration-5.png',
-                  ),
+                  // child: Image.asset(
+                  //   '',                  ),
                 ),
                 SizedBox(
                   height: 24,
@@ -98,7 +96,7 @@ class _OtpState extends State<Otp> {
                             BoxShadow(
                               // color: AppColors.unSelectedColor.withOpacity(0.3),
                               spreadRadius: 1,
-                              blurRadius: 3,
+                              blurRadius: 1,
                             ),
                           ],
                         ),
@@ -107,23 +105,14 @@ class _OtpState extends State<Otp> {
                           onPressed: () {
                             Navigator.pushNamed(context, Routes.register);
                           },
-                          // style: ButtonStyle(
-                          //   foregroundColor: MaterialStateProperty.all<Color>(
-                          //       AppColors.secondary),
-                          //   backgroundColor: MaterialStateProperty.all<Color>(
-                          //       AppColors.selectedColor),
-                          //   shape: MaterialStateProperty.all<
-                          //       RoundedRectangleBorder>(
-                          //     RoundedRectangleBorder(
-                          //       borderRadius: BorderRadius.circular(24.0),
-                          //     ),
-                          //   ),
-                          // ),
-                          child:  Padding(
+                          child: Padding(
                             padding: EdgeInsets.all(14.0),
                             child: Text(
                               'Verify',
-                           style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondary),
                             ),
                           ),
                         ),
@@ -148,12 +137,7 @@ class _OtpState extends State<Otp> {
                 ),
                 Text(
                   "Resend New Code",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.selectedColor,
-                  ),
-                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.labelSmall,
                 ),
               ],
             ),

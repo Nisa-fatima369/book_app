@@ -1,3 +1,5 @@
+import 'package:book_app/config/routes.dart';
+import 'package:book_app/theme/color.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatelessWidget {
@@ -5,6 +7,167 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder(color: Colors.deepPurple,);
+    TextEditingController _controller = TextEditingController();
+    Size size = MediaQuery.of(context).size;
+    final List<String> tabs = <String>[
+      'Your Book',
+      'Saved',
+    ];
+    return DefaultTabController(
+      length: tabs.length,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Profile'),
+          actions: [
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, Routes.setting);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Icon(
+                  Icons.settings,
+                  color: AppColors.selectedColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+        body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverOverlapAbsorber(
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                sliver: SliverAppBar(
+                  backgroundColor: AppColors.secondary,
+                  title: Column(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: AppColors.titleMedium,
+                        radius: 50,
+                      ),
+                      SizedBox(height: size.height * 0.01),
+                      Text(
+                        'Nisa Fatima',
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                      Text(
+                        'Faisalabad, Pakistan',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ],
+                  ),
+                  toolbarHeight: 180,
+                  collapsedHeight: 190,
+                  pinned: true,
+                  expandedHeight: 250.0,
+                  forceElevated: innerBoxIsScrolled,
+                  bottom: TabBar(
+                    // isScrollable: true,
+                    unselectedLabelColor: AppColors.selectedColor,
+                    labelColor: AppColors.primary,
+                    indicatorColor: AppColors.primary,
+                    tabs: tabs.map((String name) => Tab(text: name)).toList(),
+                  ),
+                ),
+              ),
+            ];
+          },
+          body: TabBarView(
+            children: tabs.map((String name) {
+              return SafeArea(
+                top: false,
+                bottom: false,
+                child: Builder(
+                  builder: (BuildContext context) {
+                    return CustomScrollView(
+                      key: PageStorageKey<String>(name),
+                      slivers: <Widget>[
+                        SliverOverlapInjector(
+                          handle:
+                              NestedScrollView.sliverOverlapAbsorberHandleFor(
+                                  context),
+                        ),
+                        SliverPadding(
+                          padding: const EdgeInsets.all(0.0),
+                          sliver: SliverFixedExtentList(
+                            itemExtent: 100.0,
+                            delegate: SliverChildBuilderDelegate(
+                              (BuildContext context, int index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: AppColors.filledColor,
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: AppColors.filledColor,
+                                          spreadRadius: 2,
+                                          blurRadius: 1,
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: ListTile(
+                                      contentPadding: const EdgeInsets.only(
+                                          top: 10, left: 10),
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, Routes.description);
+                                      },
+                                      leading: Container(
+                                        height: 130,
+                                        width: 70,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.selectedColor,
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                      ),
+                                      title: Text(
+                                        'Book Name',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge!
+                                            .copyWith(
+                                                fontWeight: FontWeight.w700),
+                                      ),
+                                      subtitle: Text(
+                                        'Author Name',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium,
+                                      ),
+                                      trailing: Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 10),
+                                        child: GestureDetector(
+                                          onTap: () {},
+                                          child: const Icon(
+                                            Icons.bookmark,
+                                            color: AppColors.primary,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                              childCount: 50,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ),
+    );
   }
 }

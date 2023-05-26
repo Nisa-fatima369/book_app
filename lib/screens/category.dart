@@ -1,4 +1,5 @@
-import 'package:book_app/routes.dart';
+import 'package:book_app/config/routes.dart';
+import 'package:book_app/theme/color.dart';
 import 'package:book_app/widgets/reuse_category.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,15 +9,19 @@ class Categorry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
-          child: Icon(Icons.arrow_back_ios),
-          onTap: () => Navigator.pushNamed(context, Routes.homeScreen),
+          child: Icon(
+            Icons.arrow_back,
+            color: AppColors.selectedColor,
+          ),
+          onTap: () => Navigator.pop(context),
         ),
-        title: Text('Categories',
-            style: Theme.of(context).textTheme.headlineSmall),
+        title: Text(
+          'Categories',
+          // style: Theme.of(context).textTheme.headlineSmall,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 40),

@@ -1,10 +1,9 @@
-import 'package:book_app/routes.dart';
+import 'package:book_app/config/routes.dart';
 import 'package:book_app/screens/phone_screen.dart';
 import 'package:book_app/theme/theming.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'onboaring_screen/onboarding_screen.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,11 +26,7 @@ class BookApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: PhoneScreen(),
-      
-      // darkTheme: customDarkTheme(),
-      // theme: customLightTheme(),
-      // themeMode: ThemeMode.system,
+      // home: PhoneScreen(),
       theme: themeData,
       debugShowCheckedModeBanner: false,
       onGenerateRoute: Routes().generateRoute,

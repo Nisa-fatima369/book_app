@@ -1,6 +1,7 @@
 import 'package:book_app/theme/color.dart';
+import 'package:book_app/widgets/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:book_app/routes.dart';
+import 'package:book_app/config/routes.dart';
 import 'package:flutter/services.dart';
 
 class PhoneScreen extends StatefulWidget {
@@ -40,9 +41,9 @@ class _PhoneScreenState extends State<PhoneScreen> {
                   decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                   ),
-                  child: Image.asset(
-                    'image/illustration-3.png',
-                  ),
+                  // child: Image.asset(
+                  //   '',
+                  // ),
                 ),
                 SizedBox(
                   height: size.height * 0.04,
@@ -50,6 +51,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                 Text(
                   'Register Phone Number',
                   style: Theme.of(context).textTheme.headlineSmall,
+                  textAlign: TextAlign.center,
                 ),
                 SizedBox(
                   height: size.height * 0.01,
@@ -78,14 +80,13 @@ class _PhoneScreenState extends State<PhoneScreen> {
                         controller: phoneController,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
-                          // PakistaniPhoneNumberFormatter(),
                         ],
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
-                        decoration: InputDecoration(
-                          // labelText: 'Phone Number',
+                        decoration: kGreyTextField.copyWith(
+                          labelText: 'Phone Number',
                           hintText: 'e.g. 03xx-xxxxxxx',
                           prefix: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 8),
@@ -117,11 +118,14 @@ class _PhoneScreenState extends State<PhoneScreen> {
                           onPressed: () {
                             Navigator.pushNamed(context, Routes.otp);
                           },
-                          child:  Padding(
+                          child: Padding(
                             padding: EdgeInsets.all(14.0),
                             child: Text(
                               'Continue',
-                             style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondary),
                             ),
                           ),
                         ),

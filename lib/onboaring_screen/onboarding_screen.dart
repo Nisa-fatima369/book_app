@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:book_app/onboaring_screen/build_page.dart';
-import 'package:book_app/routes.dart';
+import 'package:book_app/config/routes.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({super.key});
@@ -32,17 +32,18 @@ class _OnBoardingState extends State<OnBoarding> {
           },
           children: const [
             BuildPage(
-              urlImage: 'image/Buy.png',
+              
+              urlImage: '',
               title: 'Exhanging \nBuying Books ',
               subtitle: 'Used and new secondhand books at great prices',
             ),
             BuildPage(
-              urlImage: 'image/Search.png',
+              urlImage: '',
               title: 'Not getting desired books\nin local shops?',
               subtitle: 'Find Your Desire Academic Books Here.',
             ),
             BuildPage(
-              urlImage: 'image/Donate.png',
+              urlImage: '',
               title: 'Sell Or Donate Your Old \nBooks With Us.',
               subtitle:
                   'If You Want To Sell Or Donate Your Old Books \nWe can Help.',
@@ -57,6 +58,7 @@ class _OnBoardingState extends State<OnBoarding> {
                   foregroundColor: AppColors.unSelectedColor,
                   backgroundColor: AppColors.selectedColor,
                   minimumSize: const Size.fromHeight(80),
+                  
                 ),
                 onPressed: () async {
                   //navigate to choose page

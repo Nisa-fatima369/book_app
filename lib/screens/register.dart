@@ -1,11 +1,10 @@
 import 'package:book_app/theme/color.dart';
-import 'package:book_app/widgets/list_utils.dart';
-import 'package:book_app/widgets/reuse_textfield.dart';
+import 'package:book_app/util/list_utils.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
 import 'package:flutter/material.dart';
 import 'package:book_app/widgets/textfield.dart';
-import 'package:book_app/routes.dart';
+import 'package:book_app/config/routes.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -15,19 +14,20 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-   String? departmentvalue;
-    String? semestervalue;
+  String? departmentvalue;
+  String? semestervalue;
   final TextEditingController _regNoController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+
   final TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-   
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(30.0),
+          padding: EdgeInsets.all(30.0),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -47,9 +47,7 @@ class _RegisterState extends State<Register> {
                   children: [
                     Text(
                       'Registration No.',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: Theme.of(context).textTheme.labelSmall,
                     ),
                     SizedBox(height: size.height * 0.005),
                     CustomField(
@@ -59,39 +57,31 @@ class _RegisterState extends State<Register> {
                     SizedBox(height: size.height * 0.025),
                     Text(
                       'Name',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: Theme.of(context).textTheme.labelSmall,
                     ),
                     SizedBox(height: size.height * 0.005),
                     CustomField(
                       hint: 'Nisa Fatima',
-                      controler: _regNoController,
+                      controler: _nameController,
                     ),
                     SizedBox(height: size.height * 0.025),
                     Text(
                       'Department',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: Theme.of(context).textTheme.labelSmall,
                     ),
                     SizedBox(height: size.height * 0.005),
-  DropdownButtonHideUnderline(
+                    DropdownButtonHideUnderline(
                       child: DropdownButton2<String>(
-        
+                        style: Theme.of(context).textTheme.titleMedium,
                         isExpanded: true,
-                       
-                        
-                     
                         value: departmentvalue,
-                           items: departmentlist
+                        items: departmentlist
                             .map((dep) => DropdownMenuItem(
                                   value: dep,
                                   child: Text(
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
                                     dep,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                    ),
                                   ),
                                 ))
                             .toList(),
@@ -100,54 +90,36 @@ class _RegisterState extends State<Register> {
                             departmentvalue = value.toString();
                           });
                         },
-                        buttonStyleData:  ButtonStyleData(
-                         
-                          height: 40,
-                          width: size.width*09,
+                        buttonStyleData: ButtonStyleData(
+                          height: size.height * 0.06,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 1,
+                                  spreadRadius: 1,
+                                  color: AppColors.filledColor,
+                                ),
+                              ]),
                         ),
-                        dropdownStyleData: const DropdownStyleData(
+                        dropdownStyleData: DropdownStyleData(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 2,
+                                spreadRadius: 2,
+                                color: AppColors.filledColor,
+                              ),
+                            ],
+                          ),
                           maxHeight: 200,
                         ),
                         menuItemStyleData: const MenuItemStyleData(
                           height: 40,
                         ),
-                        dropdownSearchData: DropdownSearchData(
-                          searchController: searchController,
-                          searchInnerWidgetHeight: 50,
-                          searchInnerWidget: Container(
-                            height: 50,
-                            padding: const EdgeInsets.only(
-                              top: 8,
-                              bottom: 4,
-                              right: 8,
-                              left: 8,
-                            ),
-                            child: TextFormField(
-                              expands: true,
-                              maxLines: null,
-                              controller: searchController,
-                              decoration: InputDecoration(
-                                isDense: true,
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 8,
-                                ),
-                                hintText: 'Search for an item...',
-                                hintStyle: const TextStyle(fontSize: 12),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
-                          ),
-                          searchMatchFn: (departmentlist, searchValue) {
-                            return (departmentlist.value
-                                .toString()
-                                .toLowerCase()
-                                .contains(searchValue.toLowerCase()));
-                          },
-                        ),
-                        //This to clear the search value when you close the menu
                         onMenuStateChange: (isOpen) {
                           if (!isOpen) {
                             searchController.clear();
@@ -160,92 +132,129 @@ class _RegisterState extends State<Register> {
                     SizedBox(height: size.height * 0.025),
                     Text(
                       'Semester',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: Theme.of(context).textTheme.labelSmall,
                     ),
                     SizedBox(height: size.height * 0.005),
-                    DropdownButtonFormField(
-                      decoration: const InputDecoration(
-                        //Add isDense true and zero Padding.
-                        //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
-                        isDense: true,
-                        contentPadding: EdgeInsets.zero,
-
-                        //Add more decoration as you want here
-                        //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
-                      ),
-                      isExpanded: true,
-                      //             decoration: InputDecoration(  contentPadding: EdgeInsets.symmetric(
-                      //   horizontal: 10.0,
-                      //   vertical: 3.0,
-                      // ),),
-                      hint: Text(""),
-                      validator: (value) {
-                        if (value == null) {
-                          return 'required';
-                        }
-                        return null;
-                      },
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                      ),
-                      iconEnabledColor: Theme.of(context).primaryColor,
-                      elevation: 16,
-
-                      isDense: false,
-                      alignment: AlignmentDirectional.topEnd,
-                      value: semestervalue,
-                      items: semesterlist.map((sem) {
-                        return DropdownMenuItem(
-                          value: sem,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(sem.toString()),
+                    DropdownButtonHideUnderline(
+                      child: DropdownButton2<String>(
+                        style: Theme.of(context).textTheme.titleMedium,
+                        isExpanded: true,
+                        value: semestervalue,
+                        items: semesterlist
+                            .map((dep) => DropdownMenuItem(
+                                  value: dep,
+                                  child: Text(
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                    dep,
+                                  ),
+                                ))
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            semestervalue = value.toString();
+                          });
+                        },
+                        buttonStyleData: ButtonStyleData(
+                          height: size.height * 0.06,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 1,
+                                  spreadRadius: 1,
+                                  color: AppColors.filledColor,
+                                ),
+                              ]),
+                        ),
+                        dropdownStyleData: DropdownStyleData(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 2,
+                                spreadRadius: 2,
+                                color: AppColors.filledColor,
+                              ),
+                            ],
                           ),
-                        );
-                      }).toList(),
-                      onChanged: (newValue) {
-                        setState(() {
-                          semestervalue = newValue.toString();
-                        });
-                      },
+                          maxHeight: 200,
+                        ),
+                        menuItemStyleData: const MenuItemStyleData(
+                          height: 40,
+                        ),
+                        // onMenuStateChange: (isOpen) {
+                        //   if (!isOpen) {
+                        //     searchController.clear();
+                        //   }
+                        // },
+                      ),
                     ),
-                    SizedBox(height: size.height * 0.025),
-                  
-                   
+
+                    // DropdownButtonFormField(
+                    //   decoration: const InputDecoration(
+                    //     isDense: true,
+                    //     contentPadding: EdgeInsets.symmetric(horizontal: 15),
+
+                    //     //Add more decoration as you want here
+                    //     //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
+                    //   ),
+                    //   isExpanded: true,
+                    //   //             decoration: InputDecoration(  contentPadding: EdgeInsets.symmetric(
+                    //   //   horizontal: 10.0,
+                    //   //   vertical: 3.0,
+                    //   // ),),
+                    //   hint: Text(""),
+                    //   validator: (value) {
+                    //     if (value == null) {
+                    //       return 'required';
+                    //     }
+                    //     return null;
+                    //   },
+                    //   style: const TextStyle(
+                    //     color: Colors.black,
+                    //     fontSize: 14,
+                    //   ),
+                    //   iconEnabledColor: Theme.of(context).primaryColor,
+                    //   elevation: 1,
+
+                    //   isDense: false,
+                    //   alignment: AlignmentDirectional.topEnd,
+                    //   value: semestervalue,
+                    //   items: semesterlist.map((sem) {
+                    //     return DropdownMenuItem(
+                    //       value: sem,
+                    //       child: Padding(
+                    //         padding: const EdgeInsets.all(8.0),
+                    //         child: Text(sem.toString()),
+                    //       ),
+                    //     );
+                    //   }).toList(),
+                    //   onChanged: (newValue) {
+                    //     setState(() {
+                    //       semestervalue = newValue.toString();
+                    //     });
+                    //   },
+                    // ),
+                    SizedBox(height: size.height * 0.03),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         SizedBox(
+                          height: size.height * 0.05,
                           width: size.width * 0.25,
                           child: TextButton(
                             onPressed: () {
-                              // Navigator.pushReplacement(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) {
-                              //       return HomeScreen();
-                              //     },
-                              //   ),
-                              // );
-                              Navigator.pushNamed(context, Routes.homeScreen);
+                              Navigator.of(context)
+                                  .pushReplacementNamed(Routes.pageVieew);
                             },
-                            // style: ButtonStyle(
-                            //   backgroundColor: MaterialStateProperty.all(
-                            //       AppColors.selectedColor),
-                            //   shape: MaterialStateProperty.all<
-                            //       RoundedRectangleBorder>(
-                            //     RoundedRectangleBorder(
-                            //         borderRadius: BorderRadius.circular(12.0)),
-                            //   ),
-                            // ),
                             child: const Text(
                               'SUBMIT',
                               style: TextStyle(
-                                color: AppColors.secondary,
+                                color: AppColors.primary,
                               ),
                             ),
                           ),
@@ -263,37 +272,39 @@ class _RegisterState extends State<Register> {
   }
 }
 
-_optionBottomSheet(BuildContext context, List<String> options,
-    TextEditingController controller) {
-  showModalBottomSheet(
-    backgroundColor: Colors.white,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(10),
-        topRight: Radius.circular(10),
-      ),
-    ),
-    context: context,
-    builder: (context) {
-      return ListView.separated(
-        itemCount: 14,
-        separatorBuilder: (BuildContext context, int index) {
-          return const Divider();
-        },
-        itemBuilder: (BuildContext context, int index) {
-          return InkWell(
-            onTap: () {
-              controller.text = departmentlist[index];
-              Navigator.pop(context);
-            },
-            child: ListTile(
-              title: Text(
-                departmentlist[index],
-              ),
-            ),
-          );
-        },
-      );
-    },
-  );
-}
+//  dropdownSearchData: DropdownSearchData(
+//                           searchController: searchController,
+//                           searchInnerWidgetHeight: 50,
+//                           searchInnerWidget: Container(
+//                             height: 50,
+//                             padding: const EdgeInsets.only(
+//                               top: 8,
+//                               bottom: 4,
+//                               right: 8,
+//                               left: 8,
+//                             ),
+//                             child: TextFormField(
+//                               expands: true,
+//                               maxLines: null,
+//                               controller: searchController,
+//                               decoration: InputDecoration(
+//                                 isDense: true,
+//                                 contentPadding: const EdgeInsets.symmetric(
+//                                   horizontal: 25,
+//                                   vertical: 8,
+//                                 ),
+//                                 hintText: 'Search for an item...',
+//                                 hintStyle: const TextStyle(fontSize: 12),
+//                                 border: OutlineInputBorder(
+//                                   borderRadius: BorderRadius.circular(8),
+//                                 ),
+//                               ),
+//                             ),
+//                           ),
+//                           searchMatchFn: (departmentlist, searchValue) {
+//                             return (departmentlist.value
+//                                 .toString()
+//                                 .toLowerCase()
+//                                 .contains(searchValue.toLowerCase()));
+//                           },
+//                         ),
