@@ -1,4 +1,6 @@
+import 'package:book_app/screens/phone_screen.dart';
 import 'package:book_app/theme/color.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:book_app/config/routes.dart';
 
@@ -10,6 +12,8 @@ class Otp extends StatefulWidget {
 }
 
 class _OtpState extends State<Otp> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  var code = '';
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -102,7 +106,16 @@ class _OtpState extends State<Otp> {
                         ),
                         width: double.infinity,
                         child: TextButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            // Create a PhoneAuthCredential with the code
+                            PhoneAuthCredential credential =
+                                PhoneAuthProvider.credential(
+                              verificationId: PhoneScreen.verify,
+                              smsCode: code,
+                            );
+
+                            // Sign the user in (or link) with the credential
+                            await auth.signInWithCredential(credential);
                             Navigator.pushNamed(context, Routes.register);
                           },
                           child: Padding(
@@ -162,6 +175,7 @@ class _OtpState extends State<Otp> {
             if (value.length == 0 && first == false) {
               FocusScope.of(context).previousFocus();
             }
+            value = code;
           },
           showCursor: false,
           readOnly: false,
