@@ -26,6 +26,7 @@ class _OnBoardingState extends State<OnBoarding> {
       body: Container(
         padding: const EdgeInsets.only(bottom: 80),
         child: PageView(
+          
           controller: controller,
           onPageChanged: (index) {
             setState(() => isLastPage = index == 2);
