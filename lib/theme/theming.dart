@@ -60,6 +60,7 @@ ThemeData themeData = ThemeData(
     labelLarge: TextStyle(
       color: AppColors.selectedColor,
       fontSize: 17,
+      fontWeight: FontWeight.bold,
     ),
     labelMedium: TextStyle(
       color: AppColors.selectedColor,

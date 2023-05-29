@@ -1,19 +1,29 @@
+import 'dart:io';
+
 import 'package:book_app/theme/color.dart';
 import 'package:book_app/widgets/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker_android/image_picker_android.dart';
+import 'package:image_picker/image_picker.dart';
 
-class AddBookContinue extends StatelessWidget {
+class AddBookContinue extends StatefulWidget {
   const AddBookContinue({super.key});
 
   @override
+  State<AddBookContinue> createState() => _AddBookContinueState();
+}
+
+class _AddBookContinueState extends State<AddBookContinue> {
+  @override
   Widget build(BuildContext context) {
+
+    // File? pickedImage;
+    // bool isPicked = false;
+
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () {
-            // Navigator.pushNamed(context, Routes.add);
             Navigator.pop(context);
           },
           child: const Icon(
@@ -23,7 +33,6 @@ class AddBookContinue extends StatelessWidget {
         ),
         title: Text(
           'Add A Book',
-          // style: Theme.of(context).textTheme.labelMedium,
         ),
       ),
       body: Padding(
@@ -48,9 +57,17 @@ class AddBookContinue extends StatelessWidget {
               Stack(
                 children: [
                   InkWell(
-                    onTap: () {
-                      
-                    },
+                    //     onTap: () async {
+                    //   final ImagePicker _picker = ImagePicker();
+                    //   final XFile? image =
+                    //       await _picker.pickImage(source: ImageSource.gallery);
+                    //   if (image != null) {
+                    //     pickedImage = File(image.path);
+                    //     setState(() {
+                    //       isPicked = true;
+                    //     });
+                    //   }
+                    // },
                     child: Container(
                       height: size.width * 0.45,
                       decoration: BoxDecoration(
@@ -115,8 +132,8 @@ class AddBookContinue extends StatelessWidget {
                   decoration: kGreyTextField.copyWith(
                     hintMaxLines: null,
                     isCollapsed: true,
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 15),
                     hintText: 'Write a brief description about book.',
                   ),
                 ),
@@ -143,17 +160,3 @@ class AddBookContinue extends StatelessWidget {
     );
   }
 }
-
-
-//  _getFromGallery() async {
-//     PickedFile pickedFile = await ImagePicker().getImage(
-//       source: ImageSource.gallery,
-//       maxWidth: 1800,
-//       maxHeight: 1800,
-//     );
-//     if (pickedFile != null) {
-//       setState(() {
-//         imageFile = File(pickedFile.path);
-//       });
-//     }
-//   }

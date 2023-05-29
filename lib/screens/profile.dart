@@ -1,17 +1,35 @@
 import 'package:book_app/config/routes.dart';
 import 'package:book_app/theme/color.dart';
 import 'package:flutter/material.dart';
+// import 'package:image_picker/image_picker.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({super.key});
 
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+
+  // void _openImagePicker() async {
+  //   final picker = ImagePicker();
+  //   XFile? pick = await picker.pickImage(source: ImageSource.gallery);
+  //   if (pick != null) {
+  //     setState(() {
+  //       attachments.add(pick.path);
+  //     });
+  //   }
+  // }
+  
+  
   @override
   Widget build(BuildContext context) {
     TextEditingController _controller = TextEditingController();
     Size size = MediaQuery.of(context).size;
     final List<String> tabs = <String>[
       'Your Book',
-      'Saved',
+      'Bookmarks',
     ];
     return DefaultTabController(
       length: tabs.length,
@@ -43,9 +61,14 @@ class Profile extends StatelessWidget {
                   backgroundColor: AppColors.secondary,
                   title: Column(
                     children: [
-                      CircleAvatar(
-                        backgroundColor: AppColors.titleMedium,
-                        radius: 50,
+                      InkWell(
+                        onTap: (){
+                          // _openImagePicker();
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: AppColors.filledColor,
+                          radius: 50,
+                        ),
                       ),
                       SizedBox(height: size.height * 0.01),
                       Text(
@@ -171,3 +194,6 @@ class Profile extends StatelessWidget {
     );
   }
 }
+
+
+ 

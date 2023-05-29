@@ -41,12 +41,12 @@ class Description extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'How Invention Works #Book name',
+                    'How Invention Works',
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   SizedBox(height: size.height * 0.01),
                   Text(
-                    'by MATT RIDLEY #author namae',
+                    'by MATT RIDLEY',
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
                 ],
@@ -55,32 +55,9 @@ class Description extends StatelessWidget {
             SizedBox(height: size.height * 0.03),
             Container(
               height: MediaQuery.of(context).size.height * 0.3,
-              color: Colors.transparent.withOpacity(0.8),
+              color: AppColors.filledColor,
               width: double.infinity,
-              child: Stack(
-                children: [
-                  // Positioned(
-                  //   right: 15,
-                  //   top: 80,
-                  //   child: GestureDetector(
-                  //     onTap: () {},
-                  //     child: Icon(Icons.arrow_circle_right),
-                  //   ),
-                  // ),
-                  Positioned(
-                    top: 20,
-                    left: 140,
-                    child: Container(
-                      height: size.height * 0.26,
-                      width: size.width * 0.26,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: AppColors.filledColor,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // child:
             ),
             SizedBox(height: size.height * 0.03),
             Padding(

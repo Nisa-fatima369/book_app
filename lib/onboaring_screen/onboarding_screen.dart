@@ -34,7 +34,7 @@ class _OnBoardingState extends State<OnBoarding> {
             BuildPage(
               
               urlImage: '',
-              title: 'Exhanging \nBuying Books ',
+              title: 'Exchanging \nBuying Books ',
               subtitle: 'Used and new secondhand books at great prices',
             ),
             BuildPage(

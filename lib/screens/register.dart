@@ -193,51 +193,7 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
 
-                    // DropdownButtonFormField(
-                    //   decoration: const InputDecoration(
-                    //     isDense: true,
-                    //     contentPadding: EdgeInsets.symmetric(horizontal: 15),
-
-                    //     //Add more decoration as you want here
-                    //     //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
-                    //   ),
-                    //   isExpanded: true,
-                    //   //             decoration: InputDecoration(  contentPadding: EdgeInsets.symmetric(
-                    //   //   horizontal: 10.0,
-                    //   //   vertical: 3.0,
-                    //   // ),),
-                    //   hint: Text(""),
-                    //   validator: (value) {
-                    //     if (value == null) {
-                    //       return 'required';
-                    //     }
-                    //     return null;
-                    //   },
-                    //   style: const TextStyle(
-                    //     color: Colors.black,
-                    //     fontSize: 14,
-                    //   ),
-                    //   iconEnabledColor: Theme.of(context).primaryColor,
-                    //   elevation: 1,
-
-                    //   isDense: false,
-                    //   alignment: AlignmentDirectional.topEnd,
-                    //   value: semestervalue,
-                    //   items: semesterlist.map((sem) {
-                    //     return DropdownMenuItem(
-                    //       value: sem,
-                    //       child: Padding(
-                    //         padding: const EdgeInsets.all(8.0),
-                    //         child: Text(sem.toString()),
-                    //       ),
-                    //     );
-                    //   }).toList(),
-                    //   onChanged: (newValue) {
-                    //     setState(() {
-                    //       semestervalue = newValue.toString();
-                    //     });
-                    //   },
-                    // ),
+                   
                     SizedBox(height: size.height * 0.03),
 
                     Row(
@@ -271,40 +227,3 @@ class _RegisterState extends State<Register> {
     );
   }
 }
-
-//  dropdownSearchData: DropdownSearchData(
-//                           searchController: searchController,
-//                           searchInnerWidgetHeight: 50,
-//                           searchInnerWidget: Container(
-//                             height: 50,
-//                             padding: const EdgeInsets.only(
-//                               top: 8,
-//                               bottom: 4,
-//                               right: 8,
-//                               left: 8,
-//                             ),
-//                             child: TextFormField(
-//                               expands: true,
-//                               maxLines: null,
-//                               controller: searchController,
-//                               decoration: InputDecoration(
-//                                 isDense: true,
-//                                 contentPadding: const EdgeInsets.symmetric(
-//                                   horizontal: 25,
-//                                   vertical: 8,
-//                                 ),
-//                                 hintText: 'Search for an item...',
-//                                 hintStyle: const TextStyle(fontSize: 12),
-//                                 border: OutlineInputBorder(
-//                                   borderRadius: BorderRadius.circular(8),
-//                                 ),
-//                               ),
-//                             ),
-//                           ),
-//                           searchMatchFn: (departmentlist, searchValue) {
-//                             return (departmentlist.value
-//                                 .toString()
-//                                 .toLowerCase()
-//                                 .contains(searchValue.toLowerCase()));
-//                           },
-//                         ),
