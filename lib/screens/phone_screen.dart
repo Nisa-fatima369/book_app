@@ -1,11 +1,14 @@
+import 'package:book_app/config/routes.dart';
 import 'package:book_app/theme/color.dart';
 import 'package:book_app/widgets/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:book_app/config/routes.dart';
 import 'package:flutter/services.dart';
 
 class PhoneScreen extends StatefulWidget {
   const PhoneScreen({super.key});
+
+  static String verify = '';
 
   @override
   State<PhoneScreen> createState() => _PhoneScreenState();
@@ -87,7 +90,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                         ),
                         decoration: kGreyTextField.copyWith(
                           labelText: 'Phone Number',
-                          hintText: 'e.g. 03xx-xxxxxxx',
+                          // hintText: 'e.g. 03xx-xxxxxxx',
                           prefix: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 8),
                           ),
@@ -115,8 +118,20 @@ class _PhoneScreenState extends State<PhoneScreen> {
                         ),
                         width: double.infinity,
                         child: TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, Routes.otp);
+                          onPressed: () async {
+                            await FirebaseAuth.instance.verifyPhoneNumber(
+                              phoneNumber: '0300 1234567',
+                              verificationCompleted:
+                                  (PhoneAuthCredential credential) {},
+                              verificationFailed: (FirebaseAuthException e) {},
+                              codeSent:
+                                  (String verificationId, int? resendToken) {
+                                PhoneScreen.verify = verificationId;
+                                Navigator.pushNamed(context, Routes.otp);
+                              },
+                              codeAutoRetrievalTimeout:
+                                  (String verificationId) {},
+                            );
                           },
                           child: Padding(
                             padding: EdgeInsets.all(14.0),
@@ -142,121 +157,64 @@ class _PhoneScreenState extends State<PhoneScreen> {
   }
 }
 
-// Parsing
-// +1 (417) 555-5470
-
-String? validateMobile(String value) {
-  // Pattern pattern =
-  //     r'^(?:(?:(?:\+|00)92)-|0)3[0-6]\d-\d{7}$';
-  RegExp regex = RegExp(r'^(?:(?:(?:\+|00)92)-|0)3[0-6]\d-\d{7}$');
-  if (!regex.hasMatch(value))
-    return 'Enter Valid Email';
-  else {
-    return null;
-  }
-}
-
-class PhoneNumberField extends StatefulWidget {
-  @override
-  _PhoneNumberFieldState createState() => _PhoneNumberFieldState();
-}
-
-class _PhoneNumberFieldState extends State<PhoneNumberField> {
-  final _phoneController = TextEditingController();
-
-  @override
-  void dispose() {
-    _phoneController.dispose();
-    super.dispose();
+bool isValidPhoneNumber(String string) {
+  if (string == null || string.isEmpty) {
+    return false;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: _phoneController,
-      keyboardType: TextInputType.phone,
-      inputFormatters: [
-        FilteringTextInputFormatter.digitsOnly,
-        // PakistaniPhoneNumberFormatter(),
-      ],
-      decoration: InputDecoration(
-        labelText: 'Phone Number',
-        hintText: 'e.g. 03xx-xxxxxxx',
-      ),
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter a phone number';
-        }
-        return null;
-      },
-    );
+  const pattern = r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$';
+  final regExp = RegExp(pattern);
+
+  if (!regExp.hasMatch(string)) {
+    return false;
   }
+  return true;
 }
 
-// class PakistaniPhoneNumberFormatter extends TextInputFormatter {
-//   @override
-//   TextEditingValue formatEditUpdate(
-//       TextEditingValue oldValue, TextEditingValue newValue) {
-//     final text = newValue.text;
-//     var newText = '';
-//     var selectionIndex = newValue.selection.end;
-
-//     if (text.isNotEmpty) {
-//       // Add the first three characters (i.e. the area code)
-//       newText += text.substring(0, 3);
-//       if (text.length > 3) {
-//         // Add a dash after the area code
-//         newText += '-';
-//         if (selectionIndex > 3) {
-//           selectionIndex++;
-//         }
-
-//         // Add the next 7 characters (i.e. the phone number)
-//         if (text.length > 3 && text.length <= 10) {
-//           newText += text.substring(3);
-//         } else if (text.length > 10) {
-//           newText += text.substring(3, 10) + '-';
-//           if (selectionIndex > 10) {
-//             selectionIndex++;
-//           }
-//           newText += text.substring(10);
-//         }
-//       }
-//     }
-
-//     return TextEditingValue(
-//       text: newText,
-//       selection: TextSelection.collapsed(offset: selectionIndex),
-//     );
+// String? validateMobile(String value) {
+//   // Pattern pattern =
+//   //     r'^(?:(?:(?:\+|00)92)-|0)3[0-6]\d-\d{7}$';
+//   RegExp regex = RegExp(r'^(?:(?:(?:\+|00)92)-|0)3[0-6]\d-\d{7}$');
+//   if (!regex.hasMatch(value))
+//     return 'Enter Valid Email';
+//   else {
+//     return null;
 //   }
 // }
 
-
-
-
-
-
-// // Parsing
-// String springFieldUSA = '+1-417-555-5470';
-// PhoneNumber phoneNumber = await PhoneNumberUtil().parse(springFieldUSA);
-
-// // Validate
-// bool isValid = await PhoneNumberUtil().validate(springFieldUSA);
-
-// // Format
-// String formatted = await PhoneNumberUtil().format(springFieldUSASimpleNoRegion, region.code); // +1 (417) 555-5470
-
-// PhoneNumber{
-//   e164: +14175555470,
-//   type: PhoneNumberType.FIXED_LINE_OR_MOBILE,
-//   international: +1 417-555-5470,
-//   national: (417) 555-5470,
-//   countryCode: 1,
-//   regionCode: "US",
-//   nationalNumber: 4175555470,
-//   errorCode: null,
+// class PhoneNumberField extends StatefulWidget {
+//   @override
+//   _PhoneNumberFieldState createState() => _PhoneNumberFieldState();
 // }
 
-// String springFieldUSASimple = '+14175555470';
-// PhoneNumber phoneNumber = await PhoneNumberUtil().parse(springFieldUSASimple);
-// phoneNumber.regionCode; // US
+// class _PhoneNumberFieldState extends State<PhoneNumberField> {
+//   final _phoneController = TextEditingController();
+
+//   @override
+//   void dispose() {
+//     _phoneController.dispose();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return TextFormField(
+//       controller: _phoneController,
+//       keyboardType: TextInputType.phone,
+//       inputFormatters: [
+//         FilteringTextInputFormatter.digitsOnly,
+//         // PakistaniPhoneNumberFormatter(),
+//       ],
+//       decoration: InputDecoration(
+//         labelText: 'Phone Number',
+//         // hintText: 'e.g. 03xx-xxxxxxx',
+//       ),
+//       validator: (value) {
+//         if (value!.isEmpty) {
+//           return 'Please enter a phone number';
+//         }
+//         return null;
+//       },
+//     );
+//   }
+// }

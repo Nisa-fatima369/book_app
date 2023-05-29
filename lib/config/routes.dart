@@ -101,7 +101,7 @@ class Routes {
         return MaterialPageRoute<RateApp>(
             builder: (context) => const RateApp());
       default:
-        return MaterialPageRoute(builder: (context) => const OnBoarding());
+        return MaterialPageRoute(builder: (context) => const PhoneScreen());
     }
   }
 }
