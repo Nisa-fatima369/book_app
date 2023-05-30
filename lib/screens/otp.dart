@@ -113,7 +113,7 @@ class _OtpState extends State<Otp> {
                             try {
                               PhoneAuthCredential credential =
                                   PhoneAuthProvider.credential(
-                                verificationId: PhoneScreen.actualCode,
+                                verificationId :ModalRoute.of(context)!.settings.arguments.toString(),
                                 smsCode: smsCodeController.text,
                               );
 

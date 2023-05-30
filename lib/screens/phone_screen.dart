@@ -86,7 +86,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       spreadRadius: 1,
                       blurRadius: 1,
@@ -99,7 +99,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                     if (formKey.currentState?.validate() ?? false) {
                       await FirebaseAuth.instance.verifyPhoneNumber(
                         phoneNumber: number.phoneNumber!,
-                        timeout: Duration(seconds: 60),
+                        timeout: const Duration(seconds: 60),
                         verificationCompleted:
                             (PhoneAuthCredential credential) {
                           print(credential);
@@ -109,8 +109,8 @@ class _PhoneScreenState extends State<PhoneScreen> {
                         },
                         codeSent: (String verificationId, int? resendToken) {
                           
-                          PhoneScreen.actualCode = verificationId;
-                          Navigator.pushNamed(context, Routes.otp);
+                         
+                          Navigator.pushNamed(context, Routes.otp,arguments: verificationId);
                         },
                         codeAutoRetrievalTimeout: (String verificationId) {
                           
