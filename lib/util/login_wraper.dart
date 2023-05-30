@@ -1,4 +1,3 @@
- 
 import 'package:book_app/screens/page_view.dart';
 import 'package:book_app/screens/phone_screen.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +6,11 @@ class LoginWraper extends StatelessWidget {
   const LoginWraper({super.key});
 
   Future<bool> getLoginData() async {
-    await Future.delayed(const Duration(seconds: 3));
-    return false  ;
+    await Future.delayed(const Duration(seconds: 1));
+    return false;
   }
 
-  @override               
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
       future: getLoginData(),
@@ -19,7 +18,7 @@ class LoginWraper extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data == true) {
             return PageVieew();
-          }else{
+          } else {
             return const PhoneScreen();
           }
         } else {

@@ -36,8 +36,8 @@ class BookApp extends StatelessWidget {
       onGenerateRoute: Routes().generateRoute,
       initialRoute: showChoose ?  "loginWrapper":"/onboardingScreen" ,
       routes: {
-        'loginWrapper': (context) => LoginWraper(),
-        "/onboardingScreen": (context) => OnBoarding(),
+        'loginWrapper': (context) => const LoginWraper(),
+        "/onboardingScreen": (context) => const OnBoarding(),
       },
  
     );
