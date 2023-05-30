@@ -2,6 +2,7 @@
     package="com.example.book_app">
    <application
         android:requestLegacyExternalStorage="true"
+        android:enableOnBackInvokedCallback="true"
         android:label="book_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

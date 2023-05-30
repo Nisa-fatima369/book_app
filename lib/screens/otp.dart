@@ -12,8 +12,10 @@ class Otp extends StatefulWidget {
 }
 
 class _OtpState extends State<Otp> {
+  TextEditingController smsCodeController = TextEditingController();
+
+  static var code = '';
   final FirebaseAuth auth = FirebaseAuth.instance;
-  var code = '';
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -87,6 +89,8 @@ class _OtpState extends State<Otp> {
                           _textFieldOTP(first: true, last: false),
                           _textFieldOTP(first: false, last: false),
                           _textFieldOTP(first: false, last: false),
+                          _textFieldOTP(first: false, last: false),
+                          _textFieldOTP(first: false, last: false),
                           _textFieldOTP(first: false, last: true),
                         ],
                       ),
@@ -98,7 +102,6 @@ class _OtpState extends State<Otp> {
                           borderRadius: BorderRadius.circular(10.0),
                           boxShadow: [
                             BoxShadow(
-                              // color: AppColors.unSelectedColor.withOpacity(0.3),
                               spreadRadius: 1,
                               blurRadius: 1,
                             ),
@@ -107,25 +110,31 @@ class _OtpState extends State<Otp> {
                         width: double.infinity,
                         child: TextButton(
                           onPressed: () async {
-                            // Create a PhoneAuthCredential with the code
-                            PhoneAuthCredential credential =
-                                PhoneAuthProvider.credential(
-                              verificationId: PhoneScreen.verify,
-                              smsCode: code,
-                            );
+                            try {
+                              PhoneAuthCredential credential =
+                                  PhoneAuthProvider.credential(
+                                verificationId: PhoneScreen.actualCode,
+                                smsCode: smsCodeController.text,
+                              );
 
-                            // Sign the user in (or link) with the credential
-                            await auth.signInWithCredential(credential);
-                            Navigator.pushNamed(context, Routes.register);
+                              await auth.signInWithCredential(credential);
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                Routes.register,
+                                (route) => false,
+                              );
+                            } catch (e) {
+                              print('wrong otp');
+                            }
                           },
                           child: Padding(
                             padding: EdgeInsets.all(14.0),
                             child: Text(
                               'Verify',
                               style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSecondary),
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary,
+                              ),
                             ),
                           ),
                         ),
@@ -175,7 +184,7 @@ class _OtpState extends State<Otp> {
             if (value.length == 0 && first == false) {
               FocusScope.of(context).previousFocus();
             }
-            value = code;
+            //  code = value;
           },
           showCursor: false,
           readOnly: false,
