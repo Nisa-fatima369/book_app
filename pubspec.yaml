@@ -16,8 +16,8 @@ dependencies:
   dropdown_button2: ^2.1.0
   dropdown_search: ^5.0.6
   expandable: ^5.0.1
-  firebase_auth: ^4.6.1
-  firebase_core: ^2.13.0
+  firebase_auth: ^4.6.2
+  firebase_core: ^2.13.1
   flutter:
     sdk: flutter
   flutter_rating_bar: ^4.0.1

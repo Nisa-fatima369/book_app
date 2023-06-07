@@ -1,24 +1,21 @@
-import 'package:book_app/screens/page_view.dart';
 import 'package:book_app/screens/phone_screen.dart';
-import 'package:book_app/screens/register.dart';
+import 'package:book_app/util/from_Wrapper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginWraper extends StatelessWidget {
   const LoginWraper({super.key});
 
-  Future<bool> getLoginData() async {
-    await Future.delayed(const Duration(seconds: 1));
-    return false;
-  }
+  
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: getLoginData(),
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance .authStateChanges(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.data == true) {
-            return PageVieew();
+        if (snapshot.connectionState == ConnectionState.active) {
+          if (snapshot.hasData == true) {
+            return FormWrapper();
           } else {
             return PhoneScreen();
           }

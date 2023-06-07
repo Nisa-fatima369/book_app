@@ -1,6 +1,8 @@
 import 'package:book_app/config/routes.dart';
 import 'package:book_app/screens/rate_app.dart';
 import 'package:book_app/theme/color.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class Settings extends StatelessWidget {
@@ -72,7 +74,10 @@ class Settings extends StatelessWidget {
           Divider(color: Colors.grey.shade400, indent: 40, endIndent: 40),
           Listtiles(
             title: 'Logout',
-            onPressed: () {},
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.pop(context);
+            },
             icon: Icons.logout,
           ),
           // Divider(color: Colors.grey.shade400, indent: 40, endIndent: 40),

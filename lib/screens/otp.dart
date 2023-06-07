@@ -253,7 +253,7 @@ class _OtpState extends State<Otp> {
       );
     }
 
-    Future<void> _submitOTP(otp) async {
+    _submitOTP(otp) async {
       FirebaseAuth _auth = FirebaseAuth.instance;
 
       String smsCode = otp; // Replace with the user's input
@@ -262,16 +262,15 @@ class _OtpState extends State<Otp> {
           verificationId: widget.verificationId,
           smsCode: smsCode,
         );
-        User? userr = FirebaseAuth.instance.currentUser;
-        if (userr == null) {
+       
+      
           UserCredential result = await _auth.signInWithCredential(credential);
-          User user = result.user!;
-          Navigator.of(context).pushReplacementNamed(Routes.register);
-          print("new user created");
-        } else {
-          Navigator.pushReplacementNamed(context, Routes.register);
-        }
-      } catch (e) {
+          User? user = result.user;
+          if(user != null){
+            Navigator.pop(context);
+          }
+     
+      } catch (e) {             
         print(e);
       }
     }
@@ -280,7 +279,7 @@ class _OtpState extends State<Otp> {
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
-          child: Icon(
+          child: const Icon(
             Icons.arrow_back,
             size: 32,
             color: AppColors.selectedColor,
@@ -305,25 +304,22 @@ class _OtpState extends State<Otp> {
                 //   // child: Image.asset(
                 //   //   '',                  ),
                 // ),
-                SizedBox(
+                const SizedBox(
                   height: 24,
                 ),
                 Text(
                   'Verification',
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
                   "Enter your OTP code number",
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .copyWith(color: AppColors.titleMedium),
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(color: AppColors.titleMedium),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 28,
                 ),
               ],
@@ -341,8 +337,7 @@ class _OtpState extends State<Otp> {
             fieldWidth: 40,
             fieldStyle: FieldStyle.box,
             outlineBorderRadius: 15,
-            style:
-                const TextStyle(fontSize: 17, color: AppColors.selectedColor),
+            style: const TextStyle(fontSize: 17, color: AppColors.selectedColor),
             onChanged: (pin) {
               print("Changed: $pin");
             },
@@ -354,7 +349,7 @@ class _OtpState extends State<Otp> {
               print("Completed: $pin");
             },
           ),
-          SizedBox(
+          const SizedBox(
             height: 28,
           ),
           Padding(
@@ -369,15 +364,14 @@ class _OtpState extends State<Otp> {
                   padding: EdgeInsets.all(17.0),
                   child: Text(
                     'Confirm',
-                    style:
-                        TextStyle(fontSize: 16, color: AppColors.filledColor),
+                    style: TextStyle(fontSize: 16, color: AppColors.filledColor),
                   ),
                 ),
               ),
             ),
           ),
           SizedBox(height: size.height * 0.02),
-          Text(
+          const Text(
             "Didn't receive any code?",
             style: TextStyle(
               fontSize: 20,
@@ -386,7 +380,7 @@ class _OtpState extends State<Otp> {
             ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(
+          const SizedBox(
             height: 18,
           ),
           GestureDetector(
