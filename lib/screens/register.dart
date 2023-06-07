@@ -1,13 +1,18 @@
+import 'package:book_app/screens/page_view.dart';
 import 'package:book_app/theme/color.dart';
 import 'package:book_app/util/list_utils.dart';
+import 'package:book_app/util/services/database_services.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
 import 'package:flutter/material.dart';
 import 'package:book_app/widgets/textfield.dart';
-import 'package:book_app/config/routes.dart';
+import 'package:form_field_validator/form_field_validator.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Register extends StatefulWidget {
-  const Register({super.key});
+  const Register({
+    super.key,
+  });
 
   @override
   State<Register> createState() => _RegisterState();
@@ -18,8 +23,18 @@ class _RegisterState extends State<Register> {
   String? semestervalue;
   final TextEditingController _regNoController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-
+  final TextEditingController _dptController = TextEditingController();
+  final TextEditingController _semestrController = TextEditingController();
   final TextEditingController searchController = TextEditingController();
+  final TextEditingController submitController = TextEditingController();
+
+  var registrationMaskFormatter = MaskTextInputFormatter(
+    mask: '####-AAAA-######',
+    filter: {
+      'A': RegExp(r'[A-Z]'),
+      "#": RegExp(r'[0-9]'),
+    },
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +68,8 @@ class _RegisterState extends State<Register> {
                     CustomField(
                       hint: '****-GCUF-******',
                       controler: _regNoController,
+                      inputFormatter: [registrationMaskFormatter],
+                      validattor: RequiredValidator(errorText: "Required"),
                     ),
                     SizedBox(height: size.height * 0.025),
                     Text(
@@ -61,8 +78,9 @@ class _RegisterState extends State<Register> {
                     ),
                     SizedBox(height: size.height * 0.005),
                     CustomField(
-                      hint: 'Nisa Fatima',
+                      hint: 'Name',
                       controler: _nameController,
+                      validattor: RequiredValidator(errorText: "Required"),
                     ),
                     SizedBox(height: size.height * 0.025),
                     Text(
@@ -91,7 +109,7 @@ class _RegisterState extends State<Register> {
                           });
                         },
                         buttonStyleData: ButtonStyleData(
-                          height: size.height * 0.06,
+                          height: size.height * 0.05,
                           padding:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                           decoration: BoxDecoration(
@@ -109,8 +127,6 @@ class _RegisterState extends State<Register> {
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: [
                               BoxShadow(
-                                blurRadius: 2,
-                                spreadRadius: 2,
                                 color: AppColors.filledColor,
                               ),
                             ],
@@ -127,8 +143,6 @@ class _RegisterState extends State<Register> {
                         },
                       ),
                     ),
-
-                    // ReuseTextFields(hintText: '', onTap: () {}, options: departmentlist,),
                     SizedBox(height: size.height * 0.025),
                     Text(
                       'Semester',
@@ -156,15 +170,13 @@ class _RegisterState extends State<Register> {
                           });
                         },
                         buttonStyleData: ButtonStyleData(
-                          height: size.height * 0.06,
+                          height: size.height * 0.05,
                           padding:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               boxShadow: [
                                 BoxShadow(
-                                  blurRadius: 1,
-                                  spreadRadius: 1,
                                   color: AppColors.filledColor,
                                 ),
                               ]),
@@ -185,17 +197,9 @@ class _RegisterState extends State<Register> {
                         menuItemStyleData: const MenuItemStyleData(
                           height: 40,
                         ),
-                        // onMenuStateChange: (isOpen) {
-                        //   if (!isOpen) {
-                        //     searchController.clear();
-                        //   }
-                        // },
                       ),
                     ),
-
-                   
                     SizedBox(height: size.height * 0.03),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -203,14 +207,51 @@ class _RegisterState extends State<Register> {
                           height: size.height * 0.05,
                           width: size.width * 0.25,
                           child: TextButton(
-                            onPressed: () {
-                           
-                              Navigator.pushNamed(context, Routes.pageVieew);
+                            onPressed: () async {
+
+
+                              // submitController.clear();
+                              final message =
+                                  await DatabaseService().registration;
+                              if (message!.contains('user has registered.')) {
+                                final result = await DatabaseService().addUser(
+                                  regNo: _regNoController.text,
+                                  name: _nameController.text,
+                                  dpt: _dptController.text,
+                                  semestr: _semestrController.text,
+                                );
+                                if (result!.contains('success')) {
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (context) => PageVieew(),
+                                    ),
+                                  );
+                                }
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(result),
+                                  ),
+                                );
+                              }
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(message),
+                                ),
+                              );
                             },
+
+                            // {
+                            //   submitController.clear();
+
+                            //   Navigator.pushReplacementNamed(
+                            //     context,
+                            //     Routes.pageVieew,
+                            //   );
+                            // },
                             child: const Text(
                               'SUBMIT',
                               style: TextStyle(
-                                color: AppColors.primary,
+                                color: AppColors.filledColor,
                               ),
                             ),
                           ),

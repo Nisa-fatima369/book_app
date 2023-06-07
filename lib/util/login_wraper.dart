@@ -1,5 +1,6 @@
 import 'package:book_app/screens/page_view.dart';
 import 'package:book_app/screens/phone_screen.dart';
+import 'package:book_app/screens/register.dart';
 import 'package:flutter/material.dart';
 
 class LoginWraper extends StatelessWidget {
@@ -19,7 +20,7 @@ class LoginWraper extends StatelessWidget {
           if (snapshot.data == true) {
             return PageVieew();
           } else {
-            return const PhoneScreen();
+            return PhoneScreen();
           }
         } else {
           return const Scaffold(

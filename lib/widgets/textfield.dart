@@ -29,6 +29,7 @@ class CustomField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return TextFormField(
       enabled: enable,
       obscureText: obscureText == false,
@@ -45,7 +46,7 @@ class CustomField extends StatelessWidget {
       style: Theme.of(context).textTheme.titleMedium,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(
-          horizontal: 24,
+          horizontal: 28,
           vertical: 8,
         ),
         hintText: hint,

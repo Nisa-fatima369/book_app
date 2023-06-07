@@ -60,15 +60,19 @@ class Routes {
             builder: (context) => const OnBoarding());
       case phoneScreen:
         return MaterialPageRoute<PhoneScreen>(
-            builder: (context) => const PhoneScreen());
+            builder: (context) => PhoneScreen());
       case recently:
         return MaterialPageRoute<Recently>(
             builder: (context) => const Recently());
       case register:
         return MaterialPageRoute<Register>(
-            builder: (context) => const Register());
+            builder: (context) =>  Register());
       case otp:
-        return MaterialPageRoute<Otp>(builder: (context) => const Otp());
+        return MaterialPageRoute<Otp>(
+          builder: (context) => Otp(
+            verificationId: settings.arguments.toString(),
+          ),
+        );
       case chat:
         return MaterialPageRoute<Chat>(builder: (context) => const Chat());
       case profile:
@@ -101,7 +105,9 @@ class Routes {
         return MaterialPageRoute<RateApp>(
             builder: (context) => const RateApp());
       default:
-        return MaterialPageRoute(builder: (context) => const PhoneScreen());
+        return MaterialPageRoute(
+          builder: (context) => PhoneScreen(),
+        );
     }
   }
 }
