@@ -1,5 +1,5 @@
 import 'package:book_app/config/routes.dart';
-import 'package:book_app/screens/category.dart';
+import 'package:book_app/models/book_models.dart';
 import 'package:book_app/theme/color.dart';
 import 'package:book_app/util/list_utils.dart';
 import 'package:book_app/widgets/constants.dart';
@@ -16,6 +16,9 @@ class AddBook extends StatefulWidget {
 }
 
 class _AddBookState extends State<AddBook> {
+
+
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -61,7 +64,9 @@ class Card1 extends StatefulWidget {
 }
 
 class _Card1State extends State<Card1> {
-  TextEditingController controller = TextEditingController();
+  TextEditingController controllerTitle = TextEditingController();
+  TextEditingController controllerAuthor = TextEditingController();
+  TextEditingController controllerYear = TextEditingController();
   String? categorry;
   String? purpose;
 
@@ -111,6 +116,8 @@ class _Card1State extends State<Card1> {
                         SizedBox(
                           height: size.height * 0.05,
                           child: TextFormField(
+                            controller: controllerTitle,
+                            
                             style: Theme.of(context).textTheme.labelLarge,
                             decoration: kWhiteTextField.copyWith(
                               hintText: 'Book title',
@@ -129,6 +136,7 @@ class _Card1State extends State<Card1> {
                         SizedBox(
                           height: size.height * 0.05,
                           child: TextFormField(
+                            controller: controllerAuthor,
                             style: Theme.of(context).textTheme.labelLarge,
                             decoration:
                                 kWhiteTextField.copyWith(hintText: 'Author'),
@@ -146,6 +154,7 @@ class _Card1State extends State<Card1> {
                         SizedBox(
                           height: size.height * 0.05,
                           child: TextFormField(
+                            controller: controllerYear,
                             style: Theme.of(context).textTheme.labelLarge,
                             decoration:
                                 kWhiteTextField.copyWith(hintText: 'Year'),
@@ -183,11 +192,11 @@ class _Card1State extends State<Card1> {
                             },
                             buttonStyleData: ButtonStyleData(
                               height: size.height * 0.05,
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 0, vertical: 0),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
+                                  boxShadow: const [
                                     BoxShadow(
                                       blurRadius: 1,
                                       spreadRadius: 1,
@@ -198,7 +207,7 @@ class _Card1State extends State<Card1> {
                             dropdownStyleData: DropdownStyleData(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                     blurRadius: 2,
                                     spreadRadius: 2,
@@ -245,11 +254,11 @@ class _Card1State extends State<Card1> {
                             },
                             buttonStyleData: ButtonStyleData(
                               height: size.height * 0.05,
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 0, vertical: 0),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
+                                  boxShadow: const [
                                     BoxShadow(
                                       blurRadius: 1,
                                       spreadRadius: 1,
@@ -260,7 +269,7 @@ class _Card1State extends State<Card1> {
                             dropdownStyleData: DropdownStyleData(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                     blurRadius: 2,
                                     spreadRadius: 2,
@@ -283,7 +292,15 @@ class _Card1State extends State<Card1> {
                             width: size.width * 0.4,
                             child: TextButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, Routes.addBookCon);
+                                Navigator.pushNamed(context, Routes.addBookCon,arguments: Book(
+                                  title: controllerTitle.text,
+                                  author: controllerAuthor.text,
+                                  year: controllerYear.text,
+                                  category: categorry,
+                                  purpose: purpose,
+                                  
+
+                                  ));
                               },
                               child: Text(
                                 'Continue',

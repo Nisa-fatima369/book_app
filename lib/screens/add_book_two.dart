@@ -2,32 +2,34 @@ import 'dart:io';
 
 import 'package:book_app/theme/color.dart';
 import 'package:book_app/widgets/constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../models/book_models.dart';
+
 class AddBookContinue extends StatefulWidget {
-  const AddBookContinue({super.key});
+  final Book book;
+  const AddBookContinue({Key? key, required this.book}) : super(key: key);
 
   @override
   State<AddBookContinue> createState() => _AddBookContinueState();
 }
 
 class _AddBookContinueState extends State<AddBookContinue> {
+  TextEditingController descritionController = TextEditingController();
   File? image;
-  void selectImage() async {
-    image = await pickImage(context);
-    // setState(() {});
-  }
 
   Future<File?> pickImage(BuildContext context) async {
-    File? image;
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.camera);
+    final pickedImage = await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
       setState(() {
         image = File(pickedImage.path);
       });
     }
+    return null;
   }
 
   @override
@@ -67,37 +69,32 @@ class _AddBookContinueState extends State<AddBookContinue> {
                     ),
               ),
               SizedBox(height: size.height * 0.01),
-              Stack(
-                children: [
-                  InkWell(
-                      onTap: () {
-                        selectImage();
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        height: size.height * 0.45,
-                        color: Colors.grey[200],
-                        child: image != null
-                            ? Image.file(image!, fit: BoxFit.cover)
-                            : const Text('Please select an image'),
-                      )),
-                  const Positioned(
-                    top: 50,
-                    left: 140,
-                    height: 40,
-                    width: 40,
-                    child: Icon(Icons.add_circle_outline_rounded),
-                  ),
-                  Positioned(
-                    top: 85,
-                    left: 60,
-                    child: Text(
-                      'Add Photos Of Your Books',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
-                ],
+              Container(
+                color: AppColors.secondary,
+                height: size.width * 0.5,
+                width: size.width,
+                child: image != null
+                    ? Image.file(
+                        image!,
+                        fit: BoxFit.contain,
+                      )
+                    : InkWell(
+                        onTap: () => pickImage(context),
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Icon(Icons.add),
+                            ),
+                            Text(
+                              'Add Photo',
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      ),
               ),
               SizedBox(height: size.height * 0.05),
               Text(
@@ -113,17 +110,12 @@ class _AddBookContinueState extends State<AddBookContinue> {
                   color: AppColors.secondary,
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey.shade200,
-                        blurRadius: 1,
-                        spreadRadius: 2),
+                    BoxShadow(color: Colors.grey.shade200, blurRadius: 1, spreadRadius: 2),
                   ],
                 ),
                 child: TextField(
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelLarge!
-                      .copyWith(fontWeight: FontWeight.w500),
+                  controller: descritionController,
+                  style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.w500),
                   maxLines: null,
                   maxLength: null,
                   expands: true,
@@ -132,8 +124,7 @@ class _AddBookContinueState extends State<AddBookContinue> {
                   decoration: kGreyTextField.copyWith(
                     hintMaxLines: null,
                     isCollapsed: true,
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 15),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                     hintText: 'Write a brief description about book.',
                   ),
                 ),
@@ -145,7 +136,19 @@ class _AddBookContinueState extends State<AddBookContinue> {
                   height: size.height * 0.05,
                   width: size.width * 0.4,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      UploadTask uploadTask = FirebaseStorage.instance.ref().child('books/${widget.book.title}').putFile(image!);
+                      uploadTask.snapshotEvents.listen((event) {
+                        if (event.state == TaskState.success) {
+                          event.ref.getDownloadURL().then((url) async {
+                            await FirebaseFirestore.instance
+                                .collection('books')
+                                .doc()
+                                .set(widget.book.copyWith(description: descritionController.text, imageUrl: url).toMap());
+                          });
+                        }
+                      });
+                    },
                     child: Text(
                       'Publish',
                       style: Theme.of(context).textTheme.labelSmall,

@@ -21,7 +21,7 @@ class _RecentlyState extends State<Recently> {
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
-          child: Icon(
+          child: const Icon(
             Icons.arrow_back,
             color: AppColors.selectedColor,
           ),
@@ -29,60 +29,12 @@ class _RecentlyState extends State<Recently> {
             Navigator.pop(context);
           },
         ),
-        title: Text('Recently Added'),
+        title: const Text('Recently Added'),
       ),
       body: CustomScrollView(
         slivers: [
           // // SliverAppBar #1
-          // SliverAppBar(
-          //   pinned: true,
-          //   backgroundColor: Colors.green,
-          //   expandedHeight: 200.0,
-          //   elevation: 1,
-          //   flexibleSpace: FlexibleSpaceBar(
-          //     background: Container(
-          //       color: Colors.deepOrange,
-          //       child: const Center(
-          //           child: Icon(
-          //         Icons.favorite,
-          //         size: 70,
-          //         color: Colors.yellow,
-          //       )),
-          //     ),
-          //     title: const Text(
-          //       'First SliverAppBar',
-          //       style: TextStyle(color: Colors.white),
-          //     ),
-          //   ),
-          // ),
-
-          // // Just add some padding
-          // const SliverPadding(padding: EdgeInsets.symmetric(vertical: 20)),
-
-          // // SliverAppBar #2
-          // SliverAppBar(
-          //   elevation: 5,
-          //   pinned: true,
-          //   backgroundColor: Colors.pink,
-          //   expandedHeight: 250.0,
-          //   flexibleSpace: FlexibleSpaceBar(
-          //     background: Container(
-          //       color: Colors.amber,
-          //       child: const Center(
-          //           child: Icon(
-          //         Icons.run_circle,
-          //         size: 60,
-          //         color: Colors.white,
-          //       )),
-          //     ),
-          //     title: const Text(
-          //       'Second SliverAppBar',
-          //       style: TextStyle(color: Colors.white),
-          //     ),
-          //   ),
-          // ),
-
-          // Just add some padding
+        
           const SliverPadding(
               padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0)),
 
