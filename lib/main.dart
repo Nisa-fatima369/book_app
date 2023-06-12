@@ -29,16 +29,19 @@ class BookApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Book App',
-      theme: themeData,
-      debugShowCheckedModeBanner: false,
-      onGenerateRoute: Routes().generateRoute,
-      initialRoute: showChoose ? "loginWrapper" : "/onboardingScreen",
-      routes: {
-        'loginWrapper': (context) => const LoginWraper(),
-        "/onboardingScreen": (context) => const OnBoarding(),
-      },
+    return GestureDetector(
+      onTap: ()=> FocusManager.instance.primaryFocus?.unfocus(),
+      child: MaterialApp(
+        title: 'Book App',
+        theme: themeData,
+        debugShowCheckedModeBanner: false,
+        onGenerateRoute: Routes().generateRoute,
+        initialRoute: showChoose ? "loginWrapper" : "/onboardingScreen",
+        routes: {
+          'loginWrapper': (context) => const LoginWraper(),
+          "/onboardingScreen": (context) => const OnBoarding(),
+        },
+      ),
     );
   }
 }

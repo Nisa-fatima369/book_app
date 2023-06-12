@@ -13,12 +13,25 @@ class AddBookContinue extends StatefulWidget {
 }
 
 class _AddBookContinueState extends State<AddBookContinue> {
+  File? image;
+  void selectImage() async {
+    image = await pickImage(context);
+    // setState(() {});
+  }
+
+  Future<File?> pickImage(BuildContext context) async {
+    File? image;
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedImage != null) {
+      setState(() {
+        image = File(pickedImage.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    // File? pickedImage;
-    // bool isPicked = false;
-
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -31,7 +44,7 @@ class _AddBookContinueState extends State<AddBookContinue> {
             color: AppColors.selectedColor,
           ),
         ),
-        title: Text(
+        title: const Text(
           'Add A Book',
         ),
       ),
@@ -42,7 +55,7 @@ class _AddBookContinueState extends State<AddBookContinue> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'In order to give a seond home to your books, please give us many details about it as possible.',
+                'In order to give a second home to your books, please give us many details about it as possible.',
                 style: Theme.of(context).textTheme.titleMedium,
                 textAlign: TextAlign.center,
               ),
@@ -57,32 +70,19 @@ class _AddBookContinueState extends State<AddBookContinue> {
               Stack(
                 children: [
                   InkWell(
-                    //     onTap: () async {
-                    //   final ImagePicker _picker = ImagePicker();
-                    //   final XFile? image =
-                    //       await _picker.pickImage(source: ImageSource.gallery);
-                    //   if (image != null) {
-                    //     pickedImage = File(image.path);
-                    //     setState(() {
-                    //       isPicked = true;
-                    //     });
-                    //   }
-                    // },
-                    child: Container(
-                      height: size.width * 0.45,
-                      decoration: BoxDecoration(
-                        color: AppColors.filledColor,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                              color: AppColors.filledColor,
-                              blurRadius: 1,
-                              spreadRadius: 2),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
+                      onTap: () {
+                        selectImage();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        height: size.height * 0.45,
+                        color: Colors.grey[200],
+                        child: image != null
+                            ? Image.file(image!, fit: BoxFit.cover)
+                            : const Text('Please select an image'),
+                      )),
+                  const Positioned(
                     top: 50,
                     left: 140,
                     height: 40,
