@@ -16,9 +16,6 @@ class AddBook extends StatefulWidget {
 }
 
 class _AddBookState extends State<AddBook> {
-
-
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -117,7 +114,6 @@ class _Card1State extends State<Card1> {
                           height: size.height * 0.05,
                           child: TextFormField(
                             controller: controllerTitle,
-                            
                             style: Theme.of(context).textTheme.labelLarge,
                             decoration: kWhiteTextField.copyWith(
                               hintText: 'Book title',
@@ -292,15 +288,17 @@ class _Card1State extends State<Card1> {
                             width: size.width * 0.4,
                             child: TextButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, Routes.addBookCon,arguments: Book(
-                                  title: controllerTitle.text,
-                                  author: controllerAuthor.text,
-                                  year: controllerYear.text,
-                                  category: categorry,
-                                  purpose: purpose,
-                                  
-
-                                  ));
+                                Navigator.pushNamed(
+                                  context,
+                                  Routes.addBookCon,
+                                  arguments: Book(
+                                    title: controllerTitle.text,
+                                    author: controllerAuthor.text,
+                                    year: controllerYear.text,
+                                    category: categorry,
+                                    purpose: purpose,
+                                  ),
+                                );
                               },
                               child: Text(
                                 'Continue',

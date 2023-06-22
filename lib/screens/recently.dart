@@ -1,5 +1,7 @@
 import 'package:book_app/config/routes.dart';
+import 'package:book_app/models/book_models.dart';
 import 'package:book_app/theme/color.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Recently extends StatefulWidget {
@@ -10,9 +12,8 @@ class Recently extends StatefulWidget {
 }
 
 class _RecentlyState extends State<Recently> {
-  // generate dummy data to feed the second SliverGrid
-  final List _gridItems = List.generate(90, (i) => "Item $i");
-
+  // final List _gridItems = List.generate(90, (i) => "Item $i");
+  List<Book> book = [];
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -31,234 +32,133 @@ class _RecentlyState extends State<Recently> {
         ),
         title: const Text('Recently Added'),
       ),
-      body: CustomScrollView(
-        slivers: [
-          // // SliverAppBar #1
-        
-          const SliverPadding(
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0)),
-
-          // SliverGrid #2 (with dynamic content)
-          SliverGrid(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 0,
-              crossAxisSpacing: 0,
-              childAspectRatio: (itemWidth / itemHeight),
-            ),
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return RecentlyAdded(size: size);
-              },
-              childCount: _gridItems.length,
-            ),
-          ),
-        ],
+      body: FutureBuilder(
+        future: FirebaseFirestore.instance.collection('books').get(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Book> books = snapshot.data!.docs
+                .map((item) => Book.fromMap(item.data()))
+                .toList();
+            return CustomScrollView(
+              slivers: [
+                const SliverPadding(
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0)),
+                SliverGrid(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 0,
+                    crossAxisSpacing: 0,
+                    childAspectRatio: (itemWidth / itemHeight),
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, Routes.description);
+                              },
+                              child: Container(
+                                height: size.height * 0.25,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: AppColors.filledColor,
+                                ),
+                                child: Image.network(
+                                  books[index].imageUrl ?? '',
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: size.height * 0.009),
+                            Text(
+                              books[index].title ?? '',
+                              overflow: TextOverflow.clip,
+                              maxLines: 1,
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
+                            SizedBox(height: size.height * 0.009),
+                            TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                books[index].category ?? '',
+                                style: Theme.of(context).textTheme.labelSmall,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    childCount: books.length,
+                  ),
+                ),
+              ],
+            );
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
     );
   }
 }
 
-class RecentlyAdded extends StatelessWidget {
-  RecentlyAdded({
-    this.onTap,
-    super.key,
-    required this.size,
-  });
+// class RecentlyAdded extends StatelessWidget {
+//   RecentlyAdded({
+//     this.onTap,
+//     super.key,
+//     required this.size,
+//   });
 
-  final Size size;
-  Function? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: size.height * 0.25,
-            width: double.infinity,
-            color: AppColors.filledColor,
-          ),
-          Text(
-            'Book Name',
-            style: Theme.of(context).textTheme.labelLarge,
-          ),
-          SizedBox(height: size.height * 0.009),
-          TextButton(
-            onPressed: () {
-              Navigator.pushNamed(context, Routes.description);
-            },
-            child: Text(
-              'category',
-              style: Theme.of(context).textTheme.labelSmall,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// Scaffold(
-//       appBar: AppBar(
-//         leading: GestureDetector(
-//           onTap: () {
-//             Navigator.pop(context);
-//           },
-//           child: Icon(
-//             Icons.arrow_back,
-//             color: AppColors.selectedColor,
-//           ),
-//         ),
-//         title: Text('Recently Added'),
-//       ),
-//       body: 
-//     );
-
-
-// class ItemTile extends StatelessWidget {
-//   final int itemNo;
-
-//   const ItemTile(
-//     this.itemNo,
-//   );
+//   final Size size;
+//   Function? onTap;
 
 //   @override
 //   Widget build(BuildContext context) {
-//     final Color color = Colors.primaries[itemNo % Colors.primaries.length];
 //     return Padding(
-//       padding: const EdgeInsets.all(8.0),
-//       child: ListTile(
-//         tileColor: color.withOpacity(0.3),
-//         onTap: () {},
-//         leading: Container(
-//           width: 50,
-//           height: 30,
-//           color: color.withOpacity(0.5),
-//           child: Placeholder(
-//             color: color,
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           GestureDetector(
+//             onTap: () {
+//               Navigator.pushNamed(context, Routes.description);
+//             },
+//             child: Container(
+//               height: size.height * 0.25,
+//               width: double.infinity,
+//               decoration: BoxDecoration(
+//                 borderRadius: BorderRadius.circular(10),
+//               color: AppColors.filledColor,
+
+//               ),
+//                child: Image.network(
+//                               books[index].imageUrl ?? '',
+//                               fit: BoxFit.cover,
+//                             ),
+//             ),
 //           ),
-//         ),
-//         title: Text(
-//           'Product $itemNo',
-//           key: Key('text_$itemNo'),
-//         ),
+//           SizedBox(height: size.height * 0.009),
+//           Text(
+//             'Book Name',
+//             style: Theme.of(context).textTheme.labelLarge,
+//           ),
+//           SizedBox(height: size.height * 0.009),
+//           TextButton(
+//             onPressed: () {},
+//             child: Text(
+//               'category',
+//               style: Theme.of(context).textTheme.labelSmall,
+//             ),
+//           ),
+//         ],
 //       ),
 //     );
 //   }
 // }
-
-
-// DefaultTabController(
-//       length: 6,
-//       child: Scaffold(
-//         appBar: AppBar(
-//           leading: GestureDetector(
-//             onTap: () {
-//               Navigator.pushNamed(context, Routes.homeScreen);
-//             },
-//             child: Icon(
-//               Icons.arrow_back,
-//               color: AppColors.selectedColor,
-//             ),
-//           ),
-//           title: Text(
-//             'SuggestName',
-//           ),
-//           actions: [
-//             Padding(
-//               padding: const EdgeInsets.only(right: 20),
-//               child: GestureDetector(
-//                 onTap: () => Navigator.pushNamed(context, Routes.search),
-//                 child: Icon(
-//                   Icons.search,
-//                   color: AppColors.selectedColor,
-//                 ),
-//               ),
-//             ),
-//           ],
-//           bottom: PreferredSize(
-//               child: TabBar(
-//                   overlayColor: MaterialStateProperty.all(Colors.transparent),
-//                   // indicator: BoxDecoration(
-//                   //   borderRadius: BorderRadius.circular(20),
-//                   //   color: AppColors.primary,
-//                   // ),
-//                   indicatorColor: AppColors.primary,
-//                   isScrollable: true,
-//                   unselectedLabelColor: AppColors.selectedColor,
-//                   // indicatorColor: AppColors.secondary,
-//                   labelColor: AppColors.selectedColor,
-//                   tabs: [
-//                     Tab(
-//                       child: Text('All'),
-//                     ),
-//                     Tab(
-//                       child: Text('Business'),
-//                     ),
-//                     Tab(
-//                       child: Text('Education'),
-//                     ),
-//                     Tab(
-//                       child: Text('Romance'),
-//                     ),
-//                     Tab(
-//                       child: Text('Children'),
-//                     ),
-//                     Tab(
-//                       child: Text('Economy'),
-//                     )
-//                   ]),
-//               preferredSize: Size.fromHeight(50.0)),
-//         ),
-//         body: Container(
-//           height: double.maxFinite,
-//           child: TabBarView(
-//             children: <Widget>[
-//               SingleChildScrollView(
-//                 child: ListView.builder(
-//                   // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//                   //   crossAxisCount: 3,
-//                   //   mainAxisSpacing: 10,
-//                   //   crossAxisSpacing: 10,
-//                   // ),
-//                   itemCount: 50,
-//                   itemBuilder: ((context, index) {
-//                     return ItemTile(index);
-//                   }),
-//                   padding: EdgeInsets.all(10),
-//                   shrinkWrap: true,
-//                 ),
-//               ),
-//               Container(
-//                 child: Center(
-//                   child: Text('Tab 2'),
-//                 ),
-//               ),
-//               Container(
-//                 child: Center(
-//                   child: Text('Tab 3'),
-//                 ),
-//               ),
-//               Container(
-//                 child: Center(
-//                   child: Text('Tab 4'),
-//                 ),
-//               ),
-//               Container(
-//                 child: Center(
-//                   child: Text('Tab 5'),
-//                 ),
-//               ),
-//               Container(
-//                 child: Center(
-//                   child: Text('Tab 6'),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );

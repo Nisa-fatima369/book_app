@@ -24,8 +24,8 @@ List<String> options = [
   'Economy',
 ];
 
-List<String> purposes =[
-  'Buy',
+List<String> purposes = [
+  'Sell',
   'Exchange',
   'Donate',
 ];

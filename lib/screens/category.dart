@@ -20,7 +20,6 @@ class Categorry extends StatelessWidget {
         ),
         title: Text(
           'Categories',
-          // style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
       body: Padding(

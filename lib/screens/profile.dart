@@ -1,6 +1,12 @@
+import 'dart:io';
+
 import 'package:book_app/config/routes.dart';
 import 'package:book_app/theme/color.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 // import 'package:image_picker/image_picker.dart';
 
 class Profile extends StatefulWidget {
@@ -11,18 +17,60 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  File? image;
+  // File? imagecam;
 
-  // void _openImagePicker() async {
-  //   final picker = ImagePicker();
-  //   XFile? pick = await picker.pickImage(source: ImageSource.gallery);
-  //   if (pick != null) {
+  // Future<File?> pickImageCam(BuildContext context) async {
+  //   final pickedImage =
+  //       await ImagePicker().pickImage(source: ImageSource.camera);
+  //   if (pickedImage != null) {
   //     setState(() {
-  //       attachments.add(pick.path);
+  //       imagecam = File(pickedImage.path);
   //     });
   //   }
+  //   return null;
   // }
-  
-  
+
+  Future<File?> pickImageGallery(BuildContext context) async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        image = File(pickedImage.path);
+      });
+    }
+    return null;
+  }
+
+  // void _showPicker(context) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     builder: (BuildContext bc) {
+  //       return SafeArea(
+  //         child: Wrap(
+  //           children: <Widget>[
+  //             ListTile(
+  //                 leading: const Icon(Icons.photo_library),
+  //                 title: const Text('Gallery'),
+  //                 onTap: () {
+  //                   pickImageGallery;
+  //                   // Navigator.of(context).pop();
+  //                 }),
+  //             ListTile(
+  //               leading: const Icon(Icons.photo_camera),
+  //               title: const Text('Camera'),
+  //               onTap: () {
+  //                 pickImageCam;
+  //                 // Navigator.of(context).pop();
+  //               },
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
     TextEditingController _controller = TextEditingController();
@@ -35,14 +83,14 @@ class _ProfileState extends State<Profile> {
       length: tabs.length,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Profile'),
+          title: const Text('Profile'),
           actions: [
             InkWell(
               onTap: () {
                 Navigator.pushNamed(context, Routes.setting);
               },
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
+              child: const Padding(
+                padding: EdgeInsets.all(15.0),
                 child: Icon(
                   Icons.settings,
                   color: AppColors.selectedColor,
@@ -61,13 +109,51 @@ class _ProfileState extends State<Profile> {
                   backgroundColor: AppColors.secondary,
                   title: Column(
                     children: [
-                      InkWell(
-                        onTap: (){
-                          // _openImagePicker();
+                      GestureDetector(
+                        onTap: () async {
+                          // FirebaseFirestore firebaseFirestore =
+                          //     FirebaseFirestore.instance;
+                          // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+                          // await firebaseFirestore
+                          //     .collection('users')
+                          //     .doc(firebaseAuth.currentUser!.uid)
+                          //     .set({}).then(
+                          //   (value) {
+                          //     print('success');
+                          //   },
+                          // ).onError(
+                          //   (error, stackTrace) {
+                          //     print(error.toString());
+                          //   },
+                          // );
                         },
                         child: CircleAvatar(
                           backgroundColor: AppColors.filledColor,
                           radius: 50,
+                          child: image != null
+                              ? ClipOval(
+                                  child: Image.file(
+                                    image!,
+                                    fit: BoxFit.cover,
+                                    height: 100,
+                                    width: 100,
+                                  ),
+                                )
+                              : InkWell(
+                                  onTap: () => pickImageGallery(context),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: const [
+                                      Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Icon(Icons.add),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                         ),
                       ),
                       SizedBox(height: size.height * 0.01),
@@ -194,6 +280,3 @@ class _ProfileState extends State<Profile> {
     );
   }
 }
-
-
- 

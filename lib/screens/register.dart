@@ -1,11 +1,8 @@
-import 'package:book_app/screens/page_view.dart';
 import 'package:book_app/theme/color.dart';
 import 'package:book_app/util/list_utils.dart';
-import 'package:book_app/util/services/database_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:flutter/material.dart';
 import 'package:book_app/widgets/textfield.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -40,14 +37,14 @@ class _RegisterState extends State<Register> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(30.0),
+          padding: const EdgeInsets.all(30.0),
           child: SingleChildScrollView(
             child: Column(
               children: [
                 SizedBox(
                   height: size.height * 0.08,
                 ),
-                Text(
+                const Text(
                   'REGISTRATION FORM',
                   style: TextStyle(
                     fontWeight: FontWeight.w900,
@@ -95,7 +92,8 @@ class _RegisterState extends State<Register> {
                             .map((dep) => DropdownMenuItem(
                                   value: dep,
                                   child: Text(
-                                    style: Theme.of(context).textTheme.titleMedium,
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
                                     dep,
                                   ),
                                 ))
@@ -107,19 +105,22 @@ class _RegisterState extends State<Register> {
                         },
                         buttonStyleData: ButtonStyleData(
                           height: size.height * 0.05,
-                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), boxShadow: [
-                            BoxShadow(
-                              blurRadius: 1,
-                              spreadRadius: 1,
-                              color: AppColors.filledColor,
-                            ),
-                          ]),
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: const [
+                                BoxShadow(
+                                  blurRadius: 1,
+                                  spreadRadius: 1,
+                                  color: AppColors.filledColor,
+                                ),
+                              ]),
                         ),
                         dropdownStyleData: DropdownStyleData(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
+                            boxShadow: const [
                               BoxShadow(
                                 color: AppColors.filledColor,
                               ),
@@ -148,7 +149,8 @@ class _RegisterState extends State<Register> {
                             .map((dep) => DropdownMenuItem(
                                   value: dep,
                                   child: Text(
-                                    style: Theme.of(context).textTheme.titleMedium,
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
                                     dep,
                                   ),
                                 ))
@@ -160,12 +162,16 @@ class _RegisterState extends State<Register> {
                         },
                         buttonStyleData: ButtonStyleData(
                           height: size.height * 0.05,
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), boxShadow: const [
-                            BoxShadow(
-                              color: AppColors.filledColor,
-                            ),
-                          ]),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: AppColors.filledColor,
+                              ),
+                            ],
+                          ),
                         ),
                         dropdownStyleData: DropdownStyleData(
                           decoration: BoxDecoration(
@@ -194,42 +200,30 @@ class _RegisterState extends State<Register> {
                           width: size.width * 0.25,
                           child: TextButton(
                             onPressed: () async {
-                              FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+                              FirebaseFirestore firebaseFirestore =
+                                  FirebaseFirestore.instance;
                               FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-                              await firebaseFirestore.collection('users').doc(firebaseAuth.currentUser!.uid).set({
-                                'regNo': _regNoController.text,
-                                'name': _nameController.text,
-                                'dpt': departmentvalue,
-                                'semestr': semestervalue,
-                              }).then((value) {
-                                print('success');
-                              }).onError((error, stackTrace) {
-                                print(error.toString());
-                              });
-
-                              // if (result!.contains('success')) {
-                              //   Navigator.of(context).pushReplacement(
-                              //     MaterialPageRoute(
-                              //       builder: (context) => PageVieew(),
-                              //     ),
-                              //   );
-                              // }
-                              // ScaffoldMessenger.of(context).showSnackBar(
-                              //   SnackBar(
-                              //     content: Text(result),
-                              //   ),
-                              // );
+                              await firebaseFirestore
+                                  .collection('users')
+                                  .doc(firebaseAuth.currentUser!.uid)
+                                  .set(
+                                {
+                                  'regNo': _regNoController.text,
+                                  'name': _nameController.text,
+                                  'dpt': departmentvalue,
+                                  'semestr': semestervalue,
+                                },
+                              ).then(
+                                (value) {
+                                  print('success');
+                                },
+                              ).onError(
+                                (error, stackTrace) {
+                                  print(error.toString());
+                                },
+                              );
                             },
-
-                            // {
-                            //   submitController.clear();
-
-                            //   Navigator.pushReplacementNamed(
-                            //     context,
-                            //     Routes.pageVieew,
-                            //   );
-                            // },
                             child: const Text(
                               'SUBMIT',
                               style: TextStyle(

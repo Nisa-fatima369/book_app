@@ -15,9 +15,9 @@ class LoginWraper extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.hasData == true) {
-            return FormWrapper();
+            return const FormWrapper();
           } else {
-            return PhoneScreen();
+            return const PhoneScreen();
           }
         } else {
           return const Scaffold(
