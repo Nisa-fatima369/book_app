@@ -5,6 +5,7 @@ import 'package:book_app/theme/color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 // import 'package:image_picker/image_picker.dart';
@@ -20,56 +21,51 @@ class _ProfileState extends State<Profile> {
   File? image;
   // File? imagecam;
 
-  // Future<File?> pickImageCam(BuildContext context) async {
-  //   final pickedImage =
-  //       await ImagePicker().pickImage(source: ImageSource.camera);
-  //   if (pickedImage != null) {
-  //     setState(() {
-  //       imagecam = File(pickedImage.path);
-  //     });
-  //   }
-  //   return null;
-  // }
-
-  Future<File?> pickImageGallery(BuildContext context) async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+  Future<File?> pickImage(BuildContext context, ImageSource source) async {
+    final pickedImage = await ImagePicker().pickImage(source: source);
     if (pickedImage != null) {
       setState(() {
         image = File(pickedImage.path);
+      });
+      FirebaseAuth auth = FirebaseAuth.instance;
+
+      String uid = auth.currentUser!.uid.toString();
+      Reference storageReference = FirebaseStorage.instance.ref().child('profile/$uid');
+      UploadTask uploadTask = storageReference.putFile(image!);
+      await uploadTask.whenComplete(() async {
+        await storageReference.getDownloadURL().then((value) async {
+          await auth.currentUser!.updatePhotoURL(value);
+        });
       });
     }
     return null;
   }
 
-  // void _showPicker(context) {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     builder: (BuildContext bc) {
-  //       return SafeArea(
-  //         child: Wrap(
-  //           children: <Widget>[
-  //             ListTile(
-  //                 leading: const Icon(Icons.photo_library),
-  //                 title: const Text('Gallery'),
-  //                 onTap: () {
-  //                   pickImageGallery;
-  //                   // Navigator.of(context).pop();
-  //                 }),
-  //             ListTile(
-  //               leading: const Icon(Icons.photo_camera),
-  //               title: const Text('Camera'),
-  //               onTap: () {
-  //                 pickImageCam;
-  //                 // Navigator.of(context).pop();
-  //               },
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+  void _showActionSheet(BuildContext context) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        title: const Text('Profile Photo'),
+        message: const Text('Select a photo for your profile picture'),
+        actions: <CupertinoActionSheetAction>[
+          CupertinoActionSheetAction(
+            onPressed: () {
+              pickImage(context, ImageSource.camera);
+              Navigator.pop(context);
+            },
+            child: const Text('Camera'),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () {
+              pickImage(context, ImageSource.gallery);
+              Navigator.pop(context);
+            },
+            child: const Text('Gallery'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,69 +99,41 @@ class _ProfileState extends State<Profile> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverOverlapAbsorber(
-                handle:
-                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                 sliver: SliverAppBar(
                   backgroundColor: AppColors.secondary,
-                  title: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () async {
-                          // FirebaseFirestore firebaseFirestore =
-                          //     FirebaseFirestore.instance;
-                          // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-                          // await firebaseFirestore
-                          //     .collection('users')
-                          //     .doc(firebaseAuth.currentUser!.uid)
-                          //     .set({}).then(
-                          //   (value) {
-                          //     print('success');
-                          //   },
-                          // ).onError(
-                          //   (error, stackTrace) {
-                          //     print(error.toString());
-                          //   },
-                          // );
-                        },
-                        child: CircleAvatar(
-                          backgroundColor: AppColors.filledColor,
-                          radius: 50,
-                          child: image != null
-                              ? ClipOval(
-                                  child: Image.file(
-                                    image!,
-                                    fit: BoxFit.cover,
-                                    height: 100,
-                                    width: 100,
-                                  ),
-                                )
-                              : InkWell(
-                                  onTap: () => pickImageGallery(context),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: const [
-                                      Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Icon(Icons.add),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                        ),
-                      ),
-                      SizedBox(height: size.height * 0.01),
-                      Text(
-                        'Nisa Fatima',
-                        style: Theme.of(context).textTheme.labelMedium,
-                      ),
-                      Text(
-                        'Faisalabad, Pakistan',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ],
+                  title: StreamBuilder(
+                    stream: FirebaseAuth.instance.userChanges(),
+                    initialData: FirebaseAuth.instance.currentUser,
+                    builder: (context, snapshot) {
+                      User? user = snapshot.data;
+                      return Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () => _showActionSheet(context),
+                            child: user?.photoURL != null
+                                ? CircleAvatar(
+                                    backgroundColor: AppColors.filledColor, radius: 50, backgroundImage: NetworkImage(user!.photoURL.toString()))
+                                : const CircleAvatar(
+                                    backgroundColor: AppColors.filledColor,
+                                    radius: 50,
+                                    child: Icon(
+                                      Icons.person,
+                                      size: 50,
+                                    )),
+                          ),
+                          SizedBox(height: size.height * 0.01),
+                          Text(
+                            user?.displayName.toString() ?? '',
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
+                          Text(
+                            user?.email.toString() ?? '',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ],
+                      );
+                    },
                   ),
                   toolbarHeight: 180,
                   collapsedHeight: 190,
@@ -194,9 +162,7 @@ class _ProfileState extends State<Profile> {
                       key: PageStorageKey<String>(name),
                       slivers: <Widget>[
                         SliverOverlapInjector(
-                          handle:
-                              NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                  context),
+                          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                         ),
                         SliverPadding(
                           padding: const EdgeInsets.all(0.0),
@@ -205,8 +171,7 @@ class _ProfileState extends State<Profile> {
                             delegate: SliverChildBuilderDelegate(
                               (BuildContext context, int index) {
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 10),
+                                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: AppColors.filledColor,
@@ -220,38 +185,28 @@ class _ProfileState extends State<Profile> {
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: ListTile(
-                                      contentPadding: const EdgeInsets.only(
-                                          top: 10, left: 10),
+                                      contentPadding: const EdgeInsets.only(top: 10, left: 10),
                                       onTap: () {
-                                        Navigator.pushNamed(
-                                            context, Routes.description);
+                                        Navigator.pushNamed(context, Routes.description);
                                       },
                                       leading: Container(
                                         height: 130,
                                         width: 70,
                                         decoration: BoxDecoration(
                                           color: AppColors.selectedColor,
-                                          borderRadius:
-                                              BorderRadius.circular(6),
+                                          borderRadius: BorderRadius.circular(6),
                                         ),
                                       ),
                                       title: Text(
                                         'Book Name',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelLarge!
-                                            .copyWith(
-                                                fontWeight: FontWeight.w700),
+                                        style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.w700),
                                       ),
                                       subtitle: Text(
                                         'Author Name',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium,
+                                        style: Theme.of(context).textTheme.titleMedium,
                                       ),
                                       trailing: Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 10),
+                                        padding: const EdgeInsets.only(right: 10),
                                         child: GestureDetector(
                                           onTap: () {},
                                           child: const Icon(
