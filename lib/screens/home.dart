@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             'Dashboard',
           ),
           actions: [
@@ -65,18 +65,18 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 Navigator.pushNamed(context, Routes.notification);
               },
-              child: Icon(
+              child: const Icon(
                 Icons.notifications_none,
                 color: AppColors.primary,
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             InkWell(
               onTap: () {
                 Navigator.pushNamed(context, Routes.messages);
               },
-              child: Padding(
-                padding: const EdgeInsets.only(right: 10),
+              child: const Padding(
+                padding: EdgeInsets.only(right: 10),
                 child: Icon(
                   Icons.chat,
                   color: AppColors.primary,
@@ -89,24 +89,29 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               SizedBox(height: height * 0.015),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TextFormField(
-                  controller: _controller,
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.selectedColor),
-                  decoration: kGreyTextField.copyWith(
-                    filled: true,
-                    hintText: 'search',
-                    prefixIcon:
-                        Icon(Icons.search, color: AppColors.selectedColor),
-                    suffixIcon: GestureDetector(
-                      onTap: _controller.clear,
-                      child: Icon(
-                        Icons.cancel_rounded,
-                        color: AppColors.selectedColor,
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.search);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextFormField(
+                    controller: _controller,
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.selectedColor),
+                    decoration: kGreyTextField.copyWith(
+                      filled: true,
+                      hintText: 'search',
+                      prefixIcon: const Icon(Icons.search,
+                          color: AppColors.selectedColor),
+                      suffixIcon: GestureDetector(
+                        onTap: _controller.clear,
+                        child: const Icon(
+                          Icons.cancel_rounded,
+                          color: AppColors.selectedColor,
+                        ),
                       ),
                     ),
                   ),

@@ -14,6 +14,8 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   final TextEditingController _controller = TextEditingController();
   String title = '';
+  List book = List.generate(
+      26, (index) => String.fromCharCode('A'.codeUnitAt(0) + index));
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,6 @@ class _SearchState extends State<Search> {
                 onChanged: (query) {
                   setState(() {
                     title = query;
-                    
                   });
                 },
                 style: const TextStyle(
@@ -55,7 +56,6 @@ class _SearchState extends State<Search> {
             const SizedBox(width: 10),
             GestureDetector(
               onTap: () {
-                
                 Navigator.of(context).pushReplacementNamed(Routes.pageVieew);
               },
               child: Text(
@@ -73,7 +73,10 @@ class _SearchState extends State<Search> {
         child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('books')
-              .orderBy('title',descending: true)
+              .orderBy(
+                'title',
+              )
+              .where('title', isGreaterThanOrEqualTo: title)
               .snapshots(),
           builder: (context, snapshots) {
             return (snapshots.connectionState == ConnectionState.waiting)
@@ -86,23 +89,24 @@ class _SearchState extends State<Search> {
                     child: ListView.builder(
                       itemCount: snapshots.data!.docs.length,
                       itemBuilder: (context, index) {
-                        var data = snapshots.data!.docs[index].data()
-                            as Map<String, dynamic>;
+                        var book = (snapshots.data!.docs[index].data()
+                            as Map<String, dynamic>);
+
                         if (title.isEmpty) {
                           return ListTile(
                             title: Text(
-                              data['title'],
+                              book['title'],
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                           );
                         }
-                        if (data['title']
+                        if (book['index']
                             .toString()
                             .toLowerCase()
                             .startsWith(title.toLowerCase())) {
                           return ListTile(
                             title: Text(
-                              data['title'],
+                              book['title'],
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                           );
