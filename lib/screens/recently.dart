@@ -1,6 +1,7 @@
 import 'package:book_app/config/routes.dart';
 import 'package:book_app/models/book_models.dart';
 import 'package:book_app/theme/color.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -33,16 +34,13 @@ class _RecentlyState extends State<Recently> {
         title: const Text('Recently Added'),
       ),
       body: FutureBuilder(
-        future: FirebaseFirestore.instance.collection('books').get(),
+        future: FirebaseFirestore.instance.collection('books').orderBy('createdAt', descending: true).get(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            List<Book> books = snapshot.data!.docs
-                .map((item) => Book.fromMap(item.data()))
-                .toList();
+            List<Book> books = snapshot.data!.docs.map((item) => Book.fromMap(item.data())).toList();
             return CustomScrollView(
               slivers: [
-                const SliverPadding(
-                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0)),
+                const SliverPadding(padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0)),
                 SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -59,21 +57,21 @@ class _RecentlyState extends State<Recently> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(
-                                    context, Routes.description);
+                                Navigator.pushNamed(context, Routes.description, arguments: books[index]);
                               },
                               child: Container(
-                                height: size.height * 0.25,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: AppColors.filledColor,
-                                ),
-                                child: Image.network(
-                                  books[index].imageUrl ?? '',
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                                  height: size.height * 0.25,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: AppColors.filledColor,
+                                  ),
+                                  child: CachedNetworkImage(
+                                    imageUrl: books[index].imageUrl ?? '',
+                                    progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                        Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
+                                    errorWidget: (context, url, error) => Icon(Icons.error),
+                                  )),
                             ),
                             SizedBox(height: size.height * 0.009),
                             Text(

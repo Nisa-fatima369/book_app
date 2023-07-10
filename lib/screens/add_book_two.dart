@@ -24,8 +24,7 @@ class _AddBookContinueState extends State<AddBookContinue> {
   File? image;
 
   Future<File?> pickImage(BuildContext context) async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.camera);
+    final pickedImage = await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
       setState(() {
         image = File(pickedImage.path);
@@ -76,10 +75,7 @@ class _AddBookContinueState extends State<AddBookContinue> {
                   color: AppColors.filledColor,
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey.shade200,
-                        blurRadius: 1,
-                        spreadRadius: 2),
+                    BoxShadow(color: Colors.grey.shade200, blurRadius: 1, spreadRadius: 2),
                   ],
                 ),
                 height: size.width * 0.4,
@@ -121,18 +117,12 @@ class _AddBookContinueState extends State<AddBookContinue> {
                   color: AppColors.secondary,
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey.shade200,
-                        blurRadius: 1,
-                        spreadRadius: 2),
+                    BoxShadow(color: Colors.grey.shade200, blurRadius: 1, spreadRadius: 2),
                   ],
                 ),
                 child: TextField(
                   controller: descritionController,
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelLarge!
-                      .copyWith(fontWeight: FontWeight.w500),
+                  style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.w500),
                   maxLines: null,
                   maxLength: null,
                   expands: true,
@@ -141,8 +131,7 @@ class _AddBookContinueState extends State<AddBookContinue> {
                   decoration: kGreyTextField.copyWith(
                     hintMaxLines: null,
                     isCollapsed: true,
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 15),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                     hintText: 'Write a brief description about book.',
                   ),
                 ),
@@ -155,25 +144,18 @@ class _AddBookContinueState extends State<AddBookContinue> {
                   width: size.width * 0.4,
                   child: TextButton(
                     onPressed: () async {
-                      Navigator.popAndPushNamed(context, Routes.pageVieew);
-                      UploadTask uploadTask = FirebaseStorage.instance
-                          .ref()
-                          .child('books/${widget.book.title}')
-                          .putFile(image!);
-                      uploadTask.snapshotEvents.listen((event) {
+                      UploadTask uploadTask = FirebaseStorage.instance.ref().child('books/${widget.book.title}').putFile(image!);
+                      await uploadTask.snapshotEvents.listen((event) {
                         if (event.state == TaskState.success) {
                           event.ref.getDownloadURL().then((url) async {
                             await FirebaseFirestore.instance
                                 .collection('books')
-                                .doc()
-                                .set(widget.book
-                                    .copyWith(
-                                        description: descritionController.text,
-                                        imageUrl: url)
-                                    .toMap());
+                                .doc(widget.book.id)
+                                .set(widget.book.copyWith(description: descritionController.text, imageUrl: url).toMap());
                           });
                         }
                       });
+                      Navigator.popAndPushNamed(context, Routes.pageVieew);
                     },
                     child: Text(
                       'Post',

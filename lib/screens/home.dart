@@ -1,14 +1,11 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:book_app/config/routes.dart';
+import 'package:book_app/widgets/last_viewed.dart';
 import 'package:book_app/widgets/recent_book.dart';
 import 'package:book_app/widgets/constants.dart';
 import 'package:book_app/widgets/reuse_category.dart';
 import 'package:flutter/material.dart';
 import 'package:book_app/theme/color.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -97,15 +94,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextFormField(
                     controller: _controller,
-                    style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.selectedColor),
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.selectedColor),
                     decoration: kGreyTextField.copyWith(
                       filled: true,
                       hintText: 'search',
-                      prefixIcon: const Icon(Icons.search,
-                          color: AppColors.selectedColor),
+                      prefixIcon: const Icon(Icons.search, color: AppColors.selectedColor),
                       suffixIcon: GestureDetector(
                         onTap: _controller.clear,
                         child: const Icon(
@@ -200,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               SizedBox(height: height * 0.01),
-              BookWithTitle(height: height, width: width),
+              RecentlyAdded(height: height, width: width),
               SizedBox(height: height * 0.01),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -215,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               SizedBox(height: height * 0.01),
-              BookWithTitle(height: height, width: width),
+              LastViewed(height: height, width: width),
             ],
           ),
         ),

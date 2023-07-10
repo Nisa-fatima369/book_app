@@ -43,15 +43,18 @@ class Routes {
   static const String setting = 'setting';
   static const String rateApp = 'rateApp';
 
-  MaterialPageRoute<dynamic> generateRoute(RouteSettings settings) {
-    switch (settings.name) {
+  MaterialPageRoute<dynamic> generateRoute(RouteSettings routeSettings) {
+    switch (routeSettings.name) {
       // case detailScreen:
       //   return MaterialPageRoute<DetailScreen>(
       //       builder: (context) => DetailScreen(name: 'nisa',));
       case search:
         return MaterialPageRoute<Search>(builder: (context) => const Search());
       case description:
-        return MaterialPageRoute<Description>(builder: (context) => const Description());
+        return MaterialPageRoute<Description>(
+            builder: (context) => Description(
+                  book: routeSettings.arguments as Book,
+                ));
       case homeScreen:
         return MaterialPageRoute<HomeScreen>(builder: (context) => const HomeScreen());
       case onboardingScreen:
@@ -65,7 +68,7 @@ class Routes {
       case otp:
         return MaterialPageRoute<Otp>(
           builder: (context) => Otp(
-            verificationId: settings.arguments.toString(),
+            verificationId: routeSettings.arguments.toString(),
           ),
         );
       case chat:
@@ -83,7 +86,7 @@ class Routes {
       case addBookCon:
         return MaterialPageRoute<AddBookContinue>(
             builder: (context) => AddBookContinue(
-                  book: settings.arguments as Book,
+                  book: routeSettings.arguments as Book,
                 ));
       case messages:
         return MaterialPageRoute<Messages>(builder: (context) => const Messages());
