@@ -8,7 +8,7 @@ class AuthData {
   final String regNo;
   final String dept;
   final String semester;
-  final String phoneNo; 
+  final String phoneNo;
   AuthData({
     required this.fullName,
     this.profileUrl,
@@ -65,8 +65,7 @@ class AuthData {
 
   String toJson() => json.encode(toMap());
 
-  factory AuthData.fromJson(String source) =>
-      AuthData.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory AuthData.fromJson(String source) => AuthData.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -76,25 +75,18 @@ class AuthData {
   @override
   bool operator ==(covariant AuthData other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.fullName == fullName &&
-      other.profileUrl == profileUrl &&
-      other.userID == userID &&
-      other.regNo == regNo &&
-      other.dept == dept &&
-      other.semester == semester &&
-      other.phoneNo == phoneNo;
+
+    return other.fullName == fullName &&
+        other.profileUrl == profileUrl &&
+        other.userID == userID &&
+        other.regNo == regNo &&
+        other.dept == dept &&
+        other.semester == semester &&
+        other.phoneNo == phoneNo;
   }
 
   @override
   int get hashCode {
-    return fullName.hashCode ^
-      profileUrl.hashCode ^
-      userID.hashCode ^
-      regNo.hashCode ^
-      dept.hashCode ^
-      semester.hashCode ^
-      phoneNo.hashCode;
+    return fullName.hashCode ^ profileUrl.hashCode ^ userID.hashCode ^ regNo.hashCode ^ dept.hashCode ^ semester.hashCode ^ phoneNo.hashCode;
   }
 }

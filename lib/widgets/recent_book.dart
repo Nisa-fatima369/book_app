@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class RecentlyAdded extends StatelessWidget {
- const RecentlyAdded({
+  const RecentlyAdded({
     super.key,
     required this.height,
     required this.width,
@@ -15,7 +15,7 @@ class RecentlyAdded extends StatelessWidget {
 
   final double height;
   final double width;
- final Function? onTap;
+  final Function? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +52,7 @@ class RecentlyAdded extends StatelessWidget {
                             height: height * 0.19,
                             width: width * 0.27,
                             child: CachedNetworkImage(
+                              fit: BoxFit.cover,
                               imageUrl: books[index].imageUrl ?? '',
                               progressIndicatorBuilder: (context, url, downloadProgress) =>
                                   Center(child: CircularProgressIndicator(value: downloadProgress.progress)),

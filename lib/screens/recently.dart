@@ -33,8 +33,8 @@ class _RecentlyState extends State<Recently> {
         ),
         title: const Text('Recently Added'),
       ),
-      body: FutureBuilder(
-        future: FirebaseFirestore.instance.collection('books').orderBy('createdAt', descending: true).get(),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('books').orderBy('createdAt', descending: true).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<Book> books = snapshot.data!.docs.map((item) => Book.fromMap(item.data())).toList();
@@ -60,17 +60,19 @@ class _RecentlyState extends State<Recently> {
                                 Navigator.pushNamed(context, Routes.description, arguments: books[index]);
                               },
                               child: Container(
+                                  clipBehavior: Clip.antiAlias,
                                   height: size.height * 0.25,
                                   width: double.infinity,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(18),
                                     color: AppColors.filledColor,
                                   ),
                                   child: CachedNetworkImage(
+                                    fit: BoxFit.cover,
                                     imageUrl: books[index].imageUrl ?? '',
                                     progressIndicatorBuilder: (context, url, downloadProgress) =>
                                         Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
-                                    errorWidget: (context, url, error) => Icon(Icons.error),
+                                    errorWidget: (context, url, error) => const Icon(Icons.error),
                                   )),
                             ),
                             SizedBox(height: size.height * 0.009),
@@ -82,10 +84,12 @@ class _RecentlyState extends State<Recently> {
                             ),
                             SizedBox(height: size.height * 0.009),
                             TextButton(
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Colors.black54, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18))),
                               onPressed: () {},
                               child: Text(
-                                books[index].category ?? '',
-                                style: Theme.of(context).textTheme.labelSmall,
+                                books[index].category ?? 'other',
+                                style: Theme.of(context).textTheme.labelSmall!.copyWith(fontSize: 12),
                               ),
                             ),
                           ],

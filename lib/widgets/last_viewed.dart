@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LastViewed extends StatelessWidget {
+class LastViewed extends StatefulWidget {
   const LastViewed({
     super.key,
     required this.height,
@@ -19,6 +19,11 @@ class LastViewed extends StatelessWidget {
   final Function? onTap;
 
   @override
+  State<LastViewed> createState() => _LastViewedState();
+}
+
+class _LastViewedState extends State<LastViewed> {
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: FirebaseFirestore.instance.collection('LastViewed').doc(FirebaseAuth.instance.currentUser!.uid).collection('books').snapshots(),
@@ -28,7 +33,7 @@ class LastViewed extends StatelessWidget {
           lastViewed.sort((a, b) => b['last_viewed'].compareTo(a['last_viewed']));
 
           return Container(
-            height: height * 0.28,
+            height: widget.height * 0.28,
             child: ListView.builder(
               itemCount: lastViewed.length,
               scrollDirection: Axis.horizontal,
@@ -61,9 +66,10 @@ class LastViewed extends StatelessWidget {
                                     color: AppColors.filledColor,
                                     borderRadius: BorderRadius.circular(13),
                                   ),
-                                  height: height * 0.19,
-                                  width: width * 0.27,
+                                  height: widget.height * 0.19,
+                                  width: widget.width * 0.27,
                                   child: CachedNetworkImage(
+                                    fit: BoxFit.cover,
                                     imageUrl: book.imageUrl ?? '',
                                     progressIndicatorBuilder: (context, url, downloadProgress) =>
                                         Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
@@ -71,9 +77,9 @@ class LastViewed extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: height * 0.005),
+                              SizedBox(height: widget.height * 0.005),
                               SizedBox(
-                                width: width * 0.27,
+                                width: widget.width * 0.27,
                                 child: Text(
                                   book.title ?? '',
                                   overflow: TextOverflow.clip,
