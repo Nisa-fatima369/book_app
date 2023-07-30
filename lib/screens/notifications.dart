@@ -1,4 +1,3 @@
-import 'package:book_app/config/routes.dart';
 import 'package:book_app/theme/color.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -65,7 +64,7 @@ class NotifacationState extends State<Notifacation> {
                         // Navigator.pop(context);
                       },
                       isThreeLine: true,
-                      leading: CircleAvatar(
+                      leading: const CircleAvatar(
                         radius: 25,
                         backgroundColor: AppColors.titleMedium,
                       ),
@@ -94,7 +93,7 @@ class NotifacationState extends State<Notifacation> {
                 },
                 itemCount: 7,
                 separatorBuilder: (BuildContext context, int index) {
-                  return Divider();
+                  return const Divider();
                 },
               ),
             ),

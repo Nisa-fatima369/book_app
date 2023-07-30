@@ -14,7 +14,7 @@ class Recently extends StatefulWidget {
 
 class _RecentlyState extends State<Recently> {
   // final List _gridItems = List.generate(90, (i) => "Item $i");
-  List<Book> book = [];
+  // List<Book> book = [];
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

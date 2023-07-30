@@ -22,7 +22,7 @@ class _ChatState extends State<Chat> {
           onTap: () {
             Navigator.pushNamed(context, Routes.messages);
           },
-          child: Icon(
+          child: const Icon(
             Icons.arrow_back,
             color: AppColors.selectedColor,
           ),
@@ -34,7 +34,7 @@ class _ChatState extends State<Chat> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(
+            const CircleAvatar(
               radius: 30,
               backgroundColor: AppColors.titleMedium,
             ),
@@ -42,7 +42,7 @@ class _ChatState extends State<Chat> {
               'Nisa Fatima',
               style: Theme.of(context).textTheme.labelLarge,
             ),
-            Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox()),
             SizedBox(
               height: size.height * 0.06,
               child: Row(
@@ -59,7 +59,7 @@ class _ChatState extends State<Chat> {
                   SizedBox(width: size.width * 0.02),
                   GestureDetector(
                     onTap: () {},
-                    child: Icon(
+                    child: const Icon(
                       Icons.send_outlined,
                       color: AppColors.primary,
                     ),

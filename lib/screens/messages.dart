@@ -11,14 +11,14 @@ class Messages extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
-          child: Icon(
+          child: const Icon(
             Icons.arrow_back,
             color: AppColors.selectedColor,
           ),
           onTap: () =>
               Navigator.pushReplacementNamed(context, Routes.pageVieew),
         ),
-        title: Text(
+        title: const Text(
           'Messages',
         ),
       ),
@@ -39,7 +39,7 @@ class Messages extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: AppColors.filledColor,
                         borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: AppColors.filledColor,
                             blurRadius: 1,
@@ -52,7 +52,7 @@ class Messages extends StatelessWidget {
                           Navigator.pushNamed(context, Routes.chat);
                         },
                         isThreeLine: true,
-                        leading: CircleAvatar(
+                        leading: const CircleAvatar(
                           radius: 25,
                           backgroundColor: AppColors.titleMedium,
                         ),
@@ -63,7 +63,7 @@ class Messages extends StatelessWidget {
                               'Nisa Fatima',
                               style: Theme.of(context).textTheme.labelLarge,
                             ),
-                            Text('23:41'),
+                            const Text('23:41'),
                           ],
                         ),
                         subtitle: Text(
@@ -88,32 +88,3 @@ class Messages extends StatelessWidget {
   }
 }
 
-
-// Padding(
-//                         padding: const EdgeInsets.symmetric(
-//                             horizontal: 15, vertical: 10),
-//                         child: Row(
-//                           children: [
-//                             CircleAvatar(
-//                               radius: 25,
-//                               backgroundColor: AppColors.titleMedium,
-//                             ),
-//                             SizedBox(width: size.width * 0.02),
-//                             Column(
-//                               crossAxisAlignment: CrossAxisAlignment.start,
-//                               children: [
-//                                 Text(
-//                                   'Nisa Fatima',
-//                                   style: Theme.of(context).textTheme.labelLarge,
-//                                 ),
-//                                 SizedBox(height: size.height * 0.01),
-//                                 Text(
-//                                   'Thank You for this book',
-//                                   style:
-//                                       Theme.of(context).textTheme.titleMedium,
-//                                 ),
-//                               ],
-//                             ),
-//                           ],
-//                         ),
-//                       ),

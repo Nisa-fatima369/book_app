@@ -24,12 +24,12 @@ class _AddBookState extends State<AddBook> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Add A Book',
         ),
       ),
       body: ExpandableTheme(
-        data: ExpandableThemeData(
+        data: const ExpandableThemeData(
           iconSize: 30,
           iconColor: AppColors.primary,
           useInkWell: true,
@@ -47,7 +47,7 @@ class _AddBookState extends State<AddBook> {
                 textAlign: TextAlign.center,
               ),
             ),
-            Card1(),
+            const Card1(),
           ],
         ),
       ),
@@ -68,6 +68,7 @@ class _Card1State extends State<Card1> {
   TextEditingController controllerYear = TextEditingController();
   String? categorry;
   String? purpose;
+  String? condition;
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +89,7 @@ class _Card1State extends State<Card1> {
                 scrollOnExpand: false,
                 child: ExpandablePanel(
                   header: Padding(
-                    padding: EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Text(
                       'Add Information',
                       style: Theme.of(context).textTheme.titleMedium,
@@ -96,7 +97,7 @@ class _Card1State extends State<Card1> {
                   ),
                   collapsed: Container(),
                   expanded: Padding(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       bottom: 30,
                       right: 25,
                       left: 25,
@@ -106,9 +107,10 @@ class _Card1State extends State<Card1> {
                       children: [
                         Text(
                           'Book Title',
-                          style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.labelLarge!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                         SizedBox(height: size.height * 0.005),
                         SizedBox(
@@ -124,9 +126,10 @@ class _Card1State extends State<Card1> {
                         SizedBox(height: size.height * 0.02),
                         Text(
                           'Author',
-                          style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.labelLarge!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                         SizedBox(height: size.height * 0.005),
                         SizedBox(
@@ -134,15 +137,17 @@ class _Card1State extends State<Card1> {
                           child: TextFormField(
                             controller: controllerAuthor,
                             style: Theme.of(context).textTheme.labelLarge,
-                            decoration: kWhiteTextField.copyWith(hintText: 'Author'),
+                            decoration:
+                                kWhiteTextField.copyWith(hintText: 'Author'),
                           ),
                         ),
                         SizedBox(height: size.height * 0.02),
                         Text(
                           'Year Of Publishing',
-                          style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.labelLarge!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                         SizedBox(height: size.height * 0.005),
                         SizedBox(
@@ -150,15 +155,17 @@ class _Card1State extends State<Card1> {
                           child: TextFormField(
                             controller: controllerYear,
                             style: Theme.of(context).textTheme.labelLarge,
-                            decoration: kWhiteTextField.copyWith(hintText: 'Year'),
+                            decoration:
+                                kWhiteTextField.copyWith(hintText: 'Year'),
                           ),
                         ),
                         SizedBox(height: size.height * 0.02),
                         Text(
                           'Category',
-                          style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.labelLarge!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                         SizedBox(height: size.height * 0.005),
                         DropdownButtonHideUnderline(
@@ -170,7 +177,9 @@ class _Card1State extends State<Card1> {
                                 .map((categorry) => DropdownMenuItem(
                                       value: categorry,
                                       child: Text(
-                                        style: Theme.of(context).textTheme.labelLarge,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge,
                                         categorry,
                                       ),
                                     ))
@@ -182,14 +191,17 @@ class _Card1State extends State<Card1> {
                             },
                             buttonStyleData: ButtonStyleData(
                               height: size.height * 0.05,
-                              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), boxShadow: const [
-                                BoxShadow(
-                                  blurRadius: 1,
-                                  spreadRadius: 1,
-                                  color: AppColors.secondary,
-                                ),
-                              ]),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 0, vertical: 0),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      blurRadius: 1,
+                                      spreadRadius: 1,
+                                      color: AppColors.secondary,
+                                    ),
+                                  ]),
                             ),
                             dropdownStyleData: DropdownStyleData(
                               decoration: BoxDecoration(
@@ -212,9 +224,10 @@ class _Card1State extends State<Card1> {
                         SizedBox(height: size.height * 0.02),
                         Text(
                           'Purpose of book',
-                          style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.labelLarge!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                         SizedBox(height: size.height * 0.005),
                         DropdownButtonHideUnderline(
@@ -226,7 +239,9 @@ class _Card1State extends State<Card1> {
                                 .map((purpose) => DropdownMenuItem(
                                       value: purpose,
                                       child: Text(
-                                        style: Theme.of(context).textTheme.labelLarge,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge,
                                         purpose,
                                       ),
                                     ))
@@ -238,14 +253,17 @@ class _Card1State extends State<Card1> {
                             },
                             buttonStyleData: ButtonStyleData(
                               height: size.height * 0.05,
-                              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), boxShadow: const [
-                                BoxShadow(
-                                  blurRadius: 1,
-                                  spreadRadius: 1,
-                                  color: AppColors.secondary,
-                                ),
-                              ]),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 0, vertical: 0),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      blurRadius: 1,
+                                      spreadRadius: 1,
+                                      color: AppColors.secondary,
+                                    ),
+                                  ]),
                             ),
                             dropdownStyleData: DropdownStyleData(
                               decoration: BoxDecoration(
@@ -253,6 +271,68 @@ class _Card1State extends State<Card1> {
                                 boxShadow: const [
                                   BoxShadow(
                                     blurRadius: 2,
+                                    spreadRadius: 2,
+                                    color: AppColors.secondary,
+                                  ),
+                                ],
+                              ),
+                              maxHeight: 200,
+                            ),
+                            menuItemStyleData: const MenuItemStyleData(
+                              height: 40,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: size.height * 0.02),
+                        Text(
+                          'condition of book',
+                          style:
+                              Theme.of(context).textTheme.labelLarge!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                        SizedBox(height: size.height * 0.005),
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton2<String>(
+                            style: Theme.of(context).textTheme.labelLarge,
+                            isExpanded: true,
+                            value: condition,
+                            items: bookConition
+                                .map((condition) => DropdownMenuItem(
+                                      value: condition,
+                                      child: Text(
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge,
+                                        condition,
+                                      ),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                condition = value.toString();
+                              });
+                            },
+                            buttonStyleData: ButtonStyleData(
+                              height: size.height * 0.05,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 0, vertical: 0),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      blurRadius: 1,
+                                      spreadRadius: 1,
+                                      color: AppColors.secondary,
+                                    ),
+                                  ]),
+                            ),
+                            dropdownStyleData: DropdownStyleData(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    blurRadius: 1,
                                     spreadRadius: 2,
                                     color: AppColors.secondary,
                                   ),
@@ -273,8 +353,11 @@ class _Card1State extends State<Card1> {
                             width: size.width * 0.4,
                             child: TextButton(
                               onPressed: () async {
-                                DocumentReference docRef = await FirebaseFirestore.instance.collection('books').doc();
-                                 Navigator.pushNamed(
+                                DocumentReference docRef =
+                                    await FirebaseFirestore.instance
+                                        .collection('books')
+                                        .doc();
+                                Navigator.pushNamed(
                                   context,
                                   Routes.addBookCon,
                                   arguments: Book(
@@ -286,7 +369,9 @@ class _Card1State extends State<Card1> {
                                     purpose: purpose,
                                     createdAt: DateTime.now(),
                                     updatedAt: DateTime.now(),
-                                    userId: FirebaseAuth.instance.currentUser!.uid,
+                                    userId:
+                                        FirebaseAuth.instance.currentUser!.uid,
+                                    condition: condition,    
                                   ),
                                 );
                               },

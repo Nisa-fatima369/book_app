@@ -1,15 +1,18 @@
 import 'package:book_app/config/routes.dart';
+import 'package:book_app/provider/bottombar_provider.dart';
 import 'package:book_app/screens/rate_app.dart';
 import 'package:book_app/theme/color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<BottomBarProvider>(context);
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -77,6 +80,7 @@ class Settings extends StatelessWidget {
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
               Navigator.pop(context);
+              provider.updateIndex(0);
             },
             icon: Icons.logout,
           ),

@@ -1,4 +1,3 @@
-
 import 'package:book_app/config/routes.dart';
 import 'package:book_app/models/book_models.dart';
 import 'package:book_app/theme/color.dart';
@@ -9,7 +8,7 @@ FutureBuilder<QuerySnapshot<Map<String, dynamic>>> buy_method() {
   return FutureBuilder(
       future: FirebaseFirestore.instance
           .collection('books')
-          .where('purpose', isEqualTo: 'Buy')
+          .where('purpose', isEqualTo: 'Sale')
           .get(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {

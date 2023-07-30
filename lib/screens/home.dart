@@ -1,4 +1,5 @@
 import 'package:book_app/config/routes.dart';
+import 'package:book_app/provider/bottombar_provider.dart';
 import 'package:book_app/widgets/last_viewed.dart';
 import 'package:book_app/widgets/recent_book.dart';
 import 'package:book_app/widgets/constants.dart';
@@ -6,51 +7,26 @@ import 'package:book_app/widgets/reuse_category.dart';
 import 'package:flutter/material.dart';
 import 'package:book_app/theme/color.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key,  });
+
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  // final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
-  //     GlobalKey<LiquidPullToRefreshState>();
-  // static int refreshNum = 10; // number that changes when refreshed
-  // Stream<int> counterStream =
-  //     Stream<int>.periodic(const Duration(seconds: 3), (x) => refreshNum);
-
-  // Future<void> _handleRefresh() {
-  //   final Completer<void> completer = Completer<void>();
-  //   Timer(const Duration(seconds: 3), () {
-  //     completer.complete();
-  //   });
-  //   setState(() {
-  //     refreshNum = Random().nextInt(100);
-  //   });
-  //   return completer.future.then<void>((_) {
-  //     ScaffoldMessenger.of(_scaffoldKey.currentState!.context).showSnackBar(
-  //       SnackBar(
-  //         content: const Text('Refresh complete'),
-  //         action: SnackBarAction(
-  //           label: 'RETRY',
-  //           onPressed: () {
-  //             _refreshIndicatorKey.currentState!.show();
-  //           },
-  //         ),
-  //       ),
-  //     );
-  //   });
-  // }
+  TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _controller = TextEditingController();
-
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+
+    final provider = Provider.of<BottomBarProvider>(context);
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -84,21 +60,28 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: height * 0.015),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, Routes.search);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: GestureDetector(
+                  onTap: () {
+                    provider.updateIndex(1);
+                    provider.animateToPage(1);
+                  },
                   child: TextFormField(
+                    enabled: false,
                     controller: _controller,
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.selectedColor),
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.selectedColor),
                     decoration: kGreyTextField.copyWith(
                       filled: true,
                       hintText: 'search',
-                      prefixIcon: const Icon(Icons.search, color: AppColors.selectedColor),
+                      prefixIcon: const Icon(Icons.search,
+                          color: AppColors.selectedColor),
                       suffixIcon: GestureDetector(
                         onTap: _controller.clear,
                         child: const Icon(
@@ -113,23 +96,9 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(height: height * 0.015),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Categories',
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, Routes.categorry);
-                      },
-                      child: Text(
-                        'see all',
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  'Categories',
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
               ),
               SizedBox(height: height * 0.01),
@@ -144,6 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ReuseCategories(
                           text: 'Business',
                           icon: Icons.business_center,
+                        
                         ),
                         ReuseCategories(
                           text: 'Education',

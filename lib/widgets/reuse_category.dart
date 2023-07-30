@@ -1,8 +1,8 @@
-import 'package:book_app/config/routes.dart';
+import 'package:book_app/screens/category.dart';
 import 'package:flutter/material.dart';
 import 'package:book_app/theme/color.dart';
 
-class ReuseCategories extends StatelessWidget {
+class ReuseCategories extends StatefulWidget {
   final IconData icon;
   final String text;
   Function? onTap;
@@ -14,10 +14,20 @@ class ReuseCategories extends StatelessWidget {
   });
 
   @override
+  State<ReuseCategories> createState() => _ReuseCategoriesState();
+}
+
+class _ReuseCategoriesState extends State<ReuseCategories> {
+  TextEditingController controller = TextEditingController();
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, Routes.categorry);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Categorry(categoory: widget.text),
+            ));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -31,10 +41,10 @@ class ReuseCategories extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
-                icon,
+                widget.icon,
               ),
               Text(
-                text,
+                widget.text,
               )
             ],
           ),

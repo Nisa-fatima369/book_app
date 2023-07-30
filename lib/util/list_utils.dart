@@ -25,7 +25,14 @@ List<String> options = [
 ];
 
 List<String> purposes = [
-  'Sell',
+  'Sale',
   'Exchange',
   'Donate',
+];
+
+List<String> bookConition = [
+ 'As New',
+ 'Fine',
+ 'Good',
+ 'Fair'
 ];

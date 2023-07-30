@@ -1,10 +1,12 @@
 import 'package:book_app/config/routes.dart';
 import 'package:book_app/onboaring_screen/onboarding_screen.dart';
+import 'package:book_app/provider/bottombar_provider.dart';
 import 'package:book_app/theme/theming.dart';
 import 'package:book_app/util/login_wraper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future main() async {
@@ -29,8 +31,10 @@ class BookApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: ()=> FocusManager.instance.primaryFocus?.unfocus(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (ctx) => BottomBarProvider()),
+      ],
       child: MaterialApp(
         title: 'Book App',
         theme: themeData,

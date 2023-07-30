@@ -90,7 +90,7 @@ ThemeData themeData = ThemeData(
         borderSide: const BorderSide(color: AppColors.selectedColor),
         borderRadius: BorderRadius.circular(10)),
   ),
-  dropdownMenuTheme: DropdownMenuThemeData(
+  dropdownMenuTheme: const DropdownMenuThemeData(
     inputDecorationTheme: InputDecorationTheme(
       contentPadding: EdgeInsets.symmetric(horizontal: 30),
     ),

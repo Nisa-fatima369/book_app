@@ -1,13 +1,14 @@
 import 'dart:io';
 
 import 'package:book_app/config/routes.dart';
+import 'package:book_app/provider/bottombar_provider.dart';
 import 'package:book_app/theme/color.dart';
 import 'package:book_app/widgets/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../models/book_models.dart';
 
@@ -24,7 +25,8 @@ class _AddBookContinueState extends State<AddBookContinue> {
   File? image;
 
   Future<File?> pickImage(BuildContext context) async {
-    final pickedImage = await ImagePicker().pickImage(source: ImageSource.camera);
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
       setState(() {
         image = File(pickedImage.path);
@@ -35,6 +37,8 @@ class _AddBookContinueState extends State<AddBookContinue> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<BottomBarProvider>(context);
+
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -75,15 +79,21 @@ class _AddBookContinueState extends State<AddBookContinue> {
                   color: AppColors.filledColor,
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
-                    BoxShadow(color: Colors.grey.shade200, blurRadius: 1, spreadRadius: 2),
+                    BoxShadow(
+                        color: Colors.grey.shade200,
+                        blurRadius: 1,
+                        spreadRadius: 2),
                   ],
                 ),
                 height: size.width * 0.4,
                 width: size.width,
                 child: image != null
-                    ? Image.file(
-                        image!,
-                        fit: BoxFit.contain,
+                    ? InkWell(
+                        onTap: () => pickImage(context),
+                        child: Image.file(
+                          image!,
+                          fit: BoxFit.contain,
+                        ),
                       )
                     : InkWell(
                         onTap: () => pickImage(context),
@@ -117,12 +127,18 @@ class _AddBookContinueState extends State<AddBookContinue> {
                   color: AppColors.secondary,
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
-                    BoxShadow(color: Colors.grey.shade200, blurRadius: 1, spreadRadius: 2),
+                    BoxShadow(
+                        color: Colors.grey.shade200,
+                        blurRadius: 1,
+                        spreadRadius: 2),
                   ],
                 ),
                 child: TextField(
                   controller: descritionController,
-                  style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.w500),
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelLarge!
+                      .copyWith(fontWeight: FontWeight.w500),
                   maxLines: null,
                   maxLength: null,
                   expands: true,
@@ -131,7 +147,8 @@ class _AddBookContinueState extends State<AddBookContinue> {
                   decoration: kGreyTextField.copyWith(
                     hintMaxLines: null,
                     isCollapsed: true,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 15),
                     hintText: 'Write a brief description about book.',
                   ),
                 ),
@@ -144,18 +161,30 @@ class _AddBookContinueState extends State<AddBookContinue> {
                   width: size.width * 0.4,
                   child: TextButton(
                     onPressed: () async {
-                      UploadTask uploadTask = FirebaseStorage.instance.ref().child('books/${widget.book.title}').putFile(image!);
+                      UploadTask uploadTask = FirebaseStorage.instance
+                          .ref()
+                          .child('books/${widget.book.title}')
+                          .putFile(image!);
                       await uploadTask.snapshotEvents.listen((event) {
                         if (event.state == TaskState.success) {
                           event.ref.getDownloadURL().then((url) async {
                             await FirebaseFirestore.instance
                                 .collection('books')
                                 .doc(widget.book.id)
-                                .set(widget.book.copyWith(description: descritionController.text, imageUrl: url).toMap());
+                                .set(widget.book
+                                    .copyWith(
+                                        description: descritionController.text,
+                                        imageUrl: url)
+                                    .toMap());
                           });
                         }
                       });
-                      Navigator.popAndPushNamed(context, Routes.pageVieew);
+                      // Navigator.popUntil(context,
+                      //     (route) => route.settings.name == Routes.pageVieew);
+                      Navigator.pop(context);
+                      // Navigator.pop(context);
+                      provider.updateIndex(0);
+                      provider.animateToPage(0);
                     },
                     child: Text(
                       'Post',

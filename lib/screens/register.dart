@@ -105,8 +105,8 @@ class _RegisterState extends State<Register> {
                         },
                         buttonStyleData: ButtonStyleData(
                           height: size.height * 0.05,
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 0),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               boxShadow: const [
@@ -203,16 +203,21 @@ class _RegisterState extends State<Register> {
                               FirebaseFirestore firebaseFirestore =
                                   FirebaseFirestore.instance;
                               FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
+                              firebaseAuth.currentUser!
+                                  .updateDisplayName(_nameController.text);
                               await firebaseFirestore
                                   .collection('users')
                                   .doc(firebaseAuth.currentUser!.uid)
                                   .set(
                                 {
                                   'regNo': _regNoController.text,
-                                  'name': _nameController.text,
-                                  'dpt': departmentvalue,
-                                  'semestr': semestervalue,
+                                  'fullName': _nameController.text,
+                                  'dept': departmentvalue,
+                                  'semester': semestervalue,
+                                  'phoneNo':
+                                      firebaseAuth.currentUser!.phoneNumber,
+                                  'userID': firebaseAuth.currentUser!.uid,
+                                  'profileUrl': '',
                                 },
                               ).then(
                                 (value) {

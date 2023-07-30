@@ -1,3 +1,4 @@
+import 'package:book_app/models/auth_data_model.dart';
 import 'package:book_app/models/book_models.dart';
 import 'package:book_app/onboaring_screen/onboarding_screen.dart';
 import 'package:book_app/screens/category.dart';
@@ -52,19 +53,25 @@ class Routes {
         return MaterialPageRoute<Search>(builder: (context) => const Search());
       case description:
         return MaterialPageRoute<Description>(
-            builder: (context) => Description(
-                  book: routeSettings.arguments as Book,
-                ));
+          builder: (context) => Description(
+            book: routeSettings.arguments as Book,
+          ),
+        );
       case homeScreen:
-        return MaterialPageRoute<HomeScreen>(builder: (context) => const HomeScreen());
+        return MaterialPageRoute<HomeScreen>(
+            builder: (context) => const HomeScreen());
       case onboardingScreen:
-        return MaterialPageRoute<OnBoarding>(builder: (context) => const OnBoarding());
+        return MaterialPageRoute<OnBoarding>(
+            builder: (context) => const OnBoarding());
       case phoneScreen:
-        return MaterialPageRoute<PhoneScreen>(builder: (context) => PhoneScreen());
+        return MaterialPageRoute<PhoneScreen>(
+            builder: (context) => const PhoneScreen());
       case recently:
-        return MaterialPageRoute<Recently>(builder: (context) => const Recently());
+        return MaterialPageRoute<Recently>(
+            builder: (context) => const Recently());
       case register:
-        return MaterialPageRoute<Register>(builder: (context) => Register());
+        return MaterialPageRoute<Register>(
+            builder: (context) => const Register());
       case otp:
         return MaterialPageRoute<Otp>(
           builder: (context) => Otp(
@@ -74,31 +81,38 @@ class Routes {
       case chat:
         return MaterialPageRoute<Chat>(builder: (context) => const Chat());
       case profile:
-        return MaterialPageRoute<Profile>(builder: (context) => const Profile());
+        return MaterialPageRoute<Profile>(
+            builder: (context) => const Profile());
       case swap:
         return MaterialPageRoute<Swap>(builder: (context) => const Swap());
       case categorry:
-        return MaterialPageRoute<Categorry>(builder: (context) => const Categorry());
+        return MaterialPageRoute<Categorry>(builder: (context) => Categorry());
       case pageVieew:
-        return MaterialPageRoute<PageVieew>(builder: (context) => const PageVieew());
+        return MaterialPageRoute<PageVieew>(
+            builder: (context) => const PageVieew());
       case add:
-        return MaterialPageRoute<AddBook>(builder: (context) => const AddBook());
+        return MaterialPageRoute<AddBook>(
+            builder: (context) => const AddBook());
       case addBookCon:
         return MaterialPageRoute<AddBookContinue>(
             builder: (context) => AddBookContinue(
                   book: routeSettings.arguments as Book,
                 ));
       case messages:
-        return MaterialPageRoute<Messages>(builder: (context) => const Messages());
+        return MaterialPageRoute<Messages>(
+            builder: (context) => const Messages());
       case notification:
-        return MaterialPageRoute<Notifacation>(builder: (context) => const Notifacation());
+        return MaterialPageRoute<Notifacation>(
+            builder: (context) => const Notifacation());
       case setting:
-        return MaterialPageRoute<Settings>(builder: (context) => const Settings());
+        return MaterialPageRoute<Settings>(
+            builder: (context) => const Settings());
       case rateApp:
-        return MaterialPageRoute<RateApp>(builder: (context) => const RateApp());
+        return MaterialPageRoute<RateApp>(
+            builder: (context) => const RateApp());
       default:
         return MaterialPageRoute(
-          builder: (context) => PhoneScreen(),
+          builder: (context) => const PhoneScreen(),
         );
     }
   }
