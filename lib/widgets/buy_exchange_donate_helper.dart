@@ -2,6 +2,7 @@ import 'package:book_app/config/routes.dart';
 import 'package:book_app/models/book_models.dart';
 import 'package:book_app/theme/color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 FutureBuilder<QuerySnapshot<Map<String, dynamic>>> buy_method() {
@@ -73,13 +74,27 @@ FutureBuilder<QuerySnapshot<Map<String, dynamic>>> buy_method() {
                                     style: Theme.of(context).textTheme.titleMedium,
                                   ),
                                   trailing: Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: GestureDetector(
-                                      onTap: () {},
-                                      child: const Icon(
-                                        Icons.bookmark,
-                                        color: AppColors.primary,
-                                      ),
+                                    padding: const EdgeInsets.only(right: 20),
+                                    child: StreamBuilder(
+                                      stream: FirebaseFirestore.instance.collection('books').where('id', isEqualTo: books[index].id).snapshots(),
+                                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                        if (snapshot.hasData) {
+                                          final map = snapshot.data.docs.first.data();
+                                          final book = Book.fromMap(map);
+                                          final uid = FirebaseAuth.instance.currentUser!.uid;
+                                          final isBookMarked = (book.bookMarkedUsers ?? []).contains(FirebaseAuth.instance.currentUser!.uid);
+                                          return isBookMarked
+                                              ? const Icon(
+                                                  Icons.bookmark,
+                                                  color: AppColors.primary,
+                                                )
+                                              : const Icon(
+                                                  Icons.bookmark_outline,
+                                                  color: AppColors.selectedColor,
+                                                );
+                                        }
+                                        return const SizedBox();
+                                      },
                                     ),
                                   ),
                                 ),
@@ -171,13 +186,27 @@ FutureBuilder<QuerySnapshot<Map<String, dynamic>>> exchange_method() {
                                     style: Theme.of(context).textTheme.titleMedium,
                                   ),
                                   trailing: Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: GestureDetector(
-                                      onTap: () {},
-                                      child: const Icon(
-                                        Icons.bookmark,
-                                        color: AppColors.primary,
-                                      ),
+                                    padding: const EdgeInsets.only(right: 20),
+                                    child: StreamBuilder(
+                                      stream: FirebaseFirestore.instance.collection('books').where('id', isEqualTo: books[index].id).snapshots(),
+                                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                        if (snapshot.hasData) {
+                                          final map = snapshot.data.docs.first.data();
+                                          final book = Book.fromMap(map);
+                                          final uid = FirebaseAuth.instance.currentUser!.uid;
+                                          final isBookMarked = (book.bookMarkedUsers ?? []).contains(FirebaseAuth.instance.currentUser!.uid);
+                                          return isBookMarked
+                                              ? const Icon(
+                                                  Icons.bookmark,
+                                                  color: AppColors.primary,
+                                                )
+                                              : const Icon(
+                                                  Icons.bookmark_outline,
+                                                  color: AppColors.selectedColor,
+                                                );
+                                        }
+                                        return const SizedBox();
+                                      },
                                     ),
                                   ),
                                 ),
@@ -269,13 +298,27 @@ FutureBuilder<QuerySnapshot<Map<String, dynamic>>> donate_method() {
                                     style: Theme.of(context).textTheme.titleMedium,
                                   ),
                                   trailing: Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: GestureDetector(
-                                      onTap: () {},
-                                      child: const Icon(
-                                        Icons.bookmark,
-                                        color: AppColors.primary,
-                                      ),
+                                    padding: const EdgeInsets.only(right: 20),
+                                    child: StreamBuilder(
+                                      stream: FirebaseFirestore.instance.collection('books').where('id', isEqualTo: books[index].id).snapshots(),
+                                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                        if (snapshot.hasData) {
+                                          final map = snapshot.data.docs.first.data();
+                                          final book = Book.fromMap(map);
+                                          final uid = FirebaseAuth.instance.currentUser!.uid;
+                                          final isBookMarked = (book.bookMarkedUsers ?? []).contains(FirebaseAuth.instance.currentUser!.uid);
+                                          return isBookMarked
+                                              ? const Icon(
+                                                  Icons.bookmark,
+                                                  color: AppColors.primary,
+                                                )
+                                              : const Icon(
+                                                  Icons.bookmark_outline,
+                                                  color: AppColors.selectedColor,
+                                                );
+                                        }
+                                        return const SizedBox();
+                                      },
                                     ),
                                   ),
                                 ),

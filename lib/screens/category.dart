@@ -28,19 +28,13 @@ class Categorry extends StatelessWidget {
         title: Text(categoory.toString()),
       ),
       body: FutureBuilder(
-        future: FirebaseFirestore.instance
-            .collection('books')
-            .where('category', isEqualTo: categoory)
-            .get(),
+        future: FirebaseFirestore.instance.collection('books').where('category', isEqualTo: categoory).get(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            List<Book> books = snapshot.data!.docs
-                .map((item) => Book.fromMap(item.data()))
-                .toList();
+            List<Book> books = snapshot.data!.docs.map((item) => Book.fromMap(item.data())).toList();
             return CustomScrollView(
               slivers: [
-                const SliverPadding(
-                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0)),
+                const SliverPadding(padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0)),
                 SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -57,26 +51,22 @@ class Categorry extends StatelessWidget {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(context, Routes.description,
-                                    arguments: books[index]);
+                                Navigator.pushNamed(context, Routes.description, arguments: books[index]);
                               },
                               child: Container(
+                                  clipBehavior: Clip.antiAlias,
                                   height: size.height * 0.25,
                                   width: double.infinity,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(12),
                                     color: AppColors.filledColor,
                                   ),
                                   child: CachedNetworkImage(
+                                    fit: BoxFit.cover,
                                     imageUrl: books[index].imageUrl ?? '',
-                                    progressIndicatorBuilder: (context, url,
-                                            downloadProgress) =>
-                                        Center(
-                                            child: CircularProgressIndicator(
-                                                value:
-                                                    downloadProgress.progress)),
-                                    errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
+                                    progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                        Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
+                                    errorWidget: (context, url, error) => Icon(Icons.error),
                                   )),
                             ),
                             SizedBox(height: size.height * 0.009),

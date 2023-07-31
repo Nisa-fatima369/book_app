@@ -82,7 +82,7 @@ class Routes {
       case swap:
         return MaterialPageRoute<Swap>(builder: (context) => const Swap());
       case categorry:
-        return MaterialPageRoute<Categorry>(builder: (context) => Categorry());
+        return MaterialPageRoute<Categorry>(builder: (context) => const Categorry());
       case pageVieew:
         return MaterialPageRoute<PageVieew>(builder: (context) => const PageVieew());
       case add:

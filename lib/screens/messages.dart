@@ -19,7 +19,7 @@ class Messages extends StatelessWidget {
             Icons.arrow_back,
             color: AppColors.selectedColor,
           ),
-          onTap: () => Navigator.pushReplacementNamed(context, Routes.pageVieew),
+          onTap: () => Navigator.popUntil(context, (route) => route.isFirst),
         ),
         title: const Text(
           'Messages',

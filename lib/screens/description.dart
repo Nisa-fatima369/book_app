@@ -237,8 +237,7 @@ class _DescriptionState extends State<Description> {
                                 'sender': FirebaseAuth.instance.currentUser!.uid,
                                 'receiver': widget.book.userId,
                                 'receiverName': user!.fullName,
-                                'receiverProfileUrl': user!.profileUrl,
-                                
+                                'receiverProfileUrl': user!.profileUrl,                               
                                 'createdAt': DateTime.now().toIso8601String(),
                                 'id': chatRoomRef.id,
                               }).then((value) async {

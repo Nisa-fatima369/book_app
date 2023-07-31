@@ -42,8 +42,12 @@ class _LastViewedState extends State<LastViewed> {
                     future: FirebaseFirestore.instance.collection('books').doc(lastViewed[index]['book_id']).get(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
+                        return SizedBox(
+                          height: widget.height * 0.19,
+                          width: widget.width * 0.27,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
                         );
                       }
                       Book book = Book.fromMap(snapshot.data!.data()!);

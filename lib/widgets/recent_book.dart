@@ -78,8 +78,12 @@ class RecentlyAdded extends StatelessWidget {
             ),
           );
         }
-        return const Center(
-          child: CircularProgressIndicator(),
+        return const SizedBox(
+          height: 80,
+          width: 90,
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
         );
       },
     );
