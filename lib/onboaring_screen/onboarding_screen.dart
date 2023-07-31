@@ -23,64 +23,66 @@ class _OnBoardingState extends State<OnBoarding> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Container(
         padding: const EdgeInsets.only(bottom: 80),
         child: PageView(
-          
           controller: controller,
           onPageChanged: (index) {
             setState(() => isLastPage = index == 2);
           },
           children: const [
             BuildPage(
-              
-              urlImage: '',
+              urlImage: 'assets/book-swap.jpg',
               title: 'Exchanging \nBuying Books ',
               subtitle: 'Used and new secondhand books at great prices',
             ),
             BuildPage(
-              urlImage: '',
+              urlImage: 'assets/search-book.jpg',
               title: 'Not getting desired books\nin local shops?',
               subtitle: 'Find Your Desire Academic Books Here.',
             ),
             BuildPage(
-              urlImage: '',
+              urlImage: 'assets/donate-book.jpg',
               title: 'Sell Or Donate Your Old \nBooks With Us.',
-              subtitle:
-                  'If You Want To Sell Or Donate Your Old Books \nWe can Help.',
+              subtitle: 'If You Want To Sell Or Donate Your Old Books \nWe can Help.',
             ),
           ],
         ),
       ),
       bottomSheet: isLastPage
-          ? GestureDetector(
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: AppColors.unSelectedColor,
-                  backgroundColor: AppColors.selectedColor,
-                  minimumSize: const Size.fromHeight(80),
-                  
-                ),
-                onPressed: () async {
-                  //navigate to choose page
-                  final prefs = await SharedPreferences.getInstance();
-                  prefs.setBool('showChoose', true);
-                  Navigator.of(context)
-                      .pushReplacementNamed(Routes.phoneScreen);
-                },
-                child: Text(
-                  'Get Started',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleSmall!
-                      .copyWith(color: AppColors.titleMedium),
+          ? Container(
+              height: 70,
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                child: TextButton(
+                  clipBehavior: Clip.antiAlias,
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    foregroundColor: AppColors.unSelectedColor,
+                    backgroundColor: AppColors.selectedColor,
+                    minimumSize: const Size.fromHeight(80),
+                  ),
+                  onPressed: () async {
+                    //navigate to choose page
+                    final prefs = await SharedPreferences.getInstance();
+                    prefs.setBool('showChoose', true);
+                    Navigator.of(context).pushReplacementNamed(Routes.phoneScreen);
+                  },
+                  child: Text(
+                    'Get Started',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(color: Colors.white),
+                  ),
                 ),
               ),
             )
           : Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               height: 120,
+              color: Colors.white,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

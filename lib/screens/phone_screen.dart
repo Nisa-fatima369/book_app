@@ -4,8 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
- 
-
 class PhoneScreen extends StatefulWidget {
   const PhoneScreen({super.key});
 
@@ -69,10 +67,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
             SizedBox(height: 18),
             Text(
               "Add your phone number. we'll send you a verification code so we know you're real",
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium!
-                  .copyWith(color: AppColors.titleMedium),
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(color: AppColors.titleMedium),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 20),
@@ -109,18 +104,30 @@ class _PhoneScreenState extends State<PhoneScreen> {
               child: SizedBox(
                 width: size.width * 0.3,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                   onPressed: () {
                     // _loginWithPhoneNumber(phonecontroller.text);
 
                     String phoneno = countrycode! + phonecontroller.text;
+                    if (phonecontroller.text=='') {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please enter phone number'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
                     sendOTP(phoneno);
                   },
                   child: const Padding(
                     padding: EdgeInsets.all(17.0),
                     child: Text(
                       'Next',
-                      style:
-                          TextStyle(fontSize: 16, color: AppColors.filledColor),
+                      style: TextStyle(fontSize: 16, color: AppColors.filledColor),
                     ),
                   ),
                 ),

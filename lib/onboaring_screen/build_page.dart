@@ -41,11 +41,11 @@ class BuildPage extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            // Image.asset(
-            //   urlImage,
-            //   width: 275,
-            //   height: 275,
-            // ),
+            Image.asset(
+              urlImage,
+              width: 275,
+              height: 275,
+            ),
           ],
         ),
       ),
