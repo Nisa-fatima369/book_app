@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 
-
-
 class Otp extends StatefulWidget {
   const Otp({super.key, required this.verificationId});
   final String verificationId;
@@ -59,20 +57,23 @@ class _OtpState extends State<Otp> {
           verificationId: widget.verificationId,
           smsCode: smsCode,
         );
-       
-      
-          UserCredential result = await _auth.signInWithCredential(credential);
-          User? user = result.user;
-          if(user != null){
-            Navigator.pop(context);
-          }
-     
-      } catch (e) {             
-        print(e);
+
+        UserCredential result = await _auth.signInWithCredential(credential);
+        User? user = result.user;
+        if (user != null) {
+          Navigator.popUntil(context, (route) => route.isFirst);
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Invalid OTP'),
+          ),
+        );
       }
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
@@ -152,8 +153,12 @@ class _OtpState extends State<Otp> {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: SizedBox(
-              width: size.width * 0.3,
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
                 onPressed: () {
                   _submitOTP(pincode);
                 },
@@ -181,8 +186,7 @@ class _OtpState extends State<Otp> {
             height: 18,
           ),
           GestureDetector(
-            onTap: () {
-            },
+            onTap: () {},
             child: Text(
               "Resend New Code",
               style: Theme.of(context).textTheme.labelSmall,

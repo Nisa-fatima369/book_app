@@ -20,7 +20,7 @@ class Description extends StatefulWidget {
 }
 
 class _DescriptionState extends State<Description> {
-  AuthData? user;
+  UserModel? user;
   @override
   void initState() {
     updateLastViewed();
@@ -144,8 +144,8 @@ class _DescriptionState extends State<Description> {
                     future: FirebaseFirestore.instance.collection('users').doc(widget.book.userId).get(),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
-                        final map = snapshot.data!.data();
-                        user = AuthData.fromMap(map);
+                        final map = snapshot.data?.data();
+                        user = UserModel.fromMap(map);
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -221,33 +221,26 @@ class _DescriptionState extends State<Description> {
                             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('You can not contact yourself')));
                             return;
                           }
-
-                          await FirebaseFirestore.instance
-                              .collection('chatRooms')
-                              .where(
-                              
-                                'participants',
-                                arrayContains: [ FirebaseAuth.instance.currentUser!.uid, widget.book.userId],
-                              )
-                               
+                          List chatRoomId = [FirebaseAuth.instance.currentUser!.uid, widget.book.userId];
+                          chatRoomId.sort();
+                          final chatRoom = await FirebaseFirestore.instance
+                              .collection('chats')
+                              .where('chatId', isEqualTo: chatRoomId.join('_'))
                               .get()
                               .then((value) async {
                             if (value.docs.isNotEmpty) {
-                              final map = value.docs.first.data();
-                              final chatRoomId = value.docs.first.id;
-                              Navigator.pushNamed(context, Routes.chat, arguments: [chatRoomId, widget.book.userId]);
+                              Navigator.pushNamed(context, Routes.chat, arguments: [value.docs[0]['chatId'], widget.book.userId]);
                             } else {
-                              DocumentReference chatRoomRef = FirebaseFirestore.instance.collection('chatRooms').doc();
-                              await FirebaseFirestore.instance.collection('chatRooms').doc(chatRoomRef.id).set({
-                                'participants': [FirebaseAuth.instance.currentUser!.uid, widget.book.userId],
+                              await FirebaseFirestore.instance.collection('chats').doc(chatRoomId.join('_')).set({
+                                'chatId': chatRoomId.join('_'),
+                                'members': [FirebaseAuth.instance.currentUser!.uid, widget.book.userId],
+                                'lastMessage': '',
+                                'lastMessageTime': DateTime.now(),
+                                'lastMessageSender': '',
                                 'sender': FirebaseAuth.instance.currentUser!.uid,
                                 'receiver': widget.book.userId,
-                                'receiverName': user!.fullName,
-                                'receiverProfileUrl': user!.profileUrl,
-                                'createdAt': DateTime.now().toIso8601String(),
-                                'id': chatRoomRef.id,
-                              }).then((value) async {
-                                Navigator.pushNamed(context, Routes.chat, arguments: [chatRoomRef.id, widget.book.userId]);
+                              }).then((value) {
+                                Navigator.pushNamed(context, Routes.chat, arguments: [chatRoomId.join('_'), widget.book.userId]);
                               });
                             }
                           });

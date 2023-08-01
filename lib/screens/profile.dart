@@ -27,17 +27,13 @@ class _ProfileState extends State<Profile> {
       });
       FirebaseAuth auth = FirebaseAuth.instance;
       String uid = auth.currentUser!.uid.toString();
-      Reference storageReference =
-          FirebaseStorage.instance.ref().child('users/$uid');
+      Reference storageReference = FirebaseStorage.instance.ref().child('users/$uid');
       UploadTask uploadTask = storageReference.putFile(image!);
       await uploadTask.whenComplete(
         () async {
           await storageReference.getDownloadURL().then(
             (value) async {
-              await FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(uid)
-                  .update({'profileUrl': value});
+              await FirebaseFirestore.instance.collection('users').doc(uid).update({'profileUrl': value});
               auth.currentUser!.updatePhotoURL(value);
               setState(() {});
             },
@@ -54,10 +50,7 @@ class _ProfileState extends State<Profile> {
       if (user != null) {
         final FirebaseStorage storage = FirebaseStorage.instance;
         final Reference storageRef = storage.refFromURL(user.photoURL!);
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .update({'profileUrl': ''});
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).update({'profileUrl': ''});
         storageRef.delete();
         Navigator.pop(context);
         setState(() {});
@@ -143,25 +136,20 @@ class _ProfileState extends State<Profile> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverOverlapAbsorber(
-                handle:
-                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                 sliver: SliverAppBar(
                   backgroundColor: AppColors.secondary,
                   title: FutureBuilder(
-                    future: FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(FirebaseAuth.instance.currentUser!.uid)
-                        .get(),
+                    future: FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get(),
                     builder: (context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
                         final map = snapshot.data!.data();
-                        final user = AuthData.fromMap(map);
+                        final user = UserModel.fromMap(map);
                         return Column(
                           children: [
                             GestureDetector(
                               onTap: () => _showActionSheet(context),
-                              child: user.profileUrl != null &&
-                                      user.profileUrl!.isNotEmpty
+                              child: user.profileUrl != null && user.profileUrl!.isNotEmpty
                                   ? CircleAvatar(
                                       backgroundColor: AppColors.filledColor,
                                       radius: 50,
@@ -218,26 +206,19 @@ class _ProfileState extends State<Profile> {
           body: TabBarView(
             children: [
               FutureBuilder(
-                future: FirebaseFirestore.instance
-                    .collection('books')
-                    .where('userId',
-                        isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                    .get(),
+                future: FirebaseFirestore.instance.collection('books').where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid).get(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
-                  List<Book> books = snapshot.data!.docs
-                      .map((e) => Book.fromMap(e.data()))
-                      .toList();
+                  List<Book> books = snapshot.data!.docs.map((e) => Book.fromMap(e.data())).toList();
                   return ListView.builder(
                     itemCount: books.length,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                         child: Container(
                           decoration: BoxDecoration(
                             color: AppColors.filledColor,
@@ -251,8 +232,7 @@ class _ProfileState extends State<Profile> {
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: ListTile(
-                            contentPadding:
-                                const EdgeInsets.only(top: 10, left: 10),
+                            contentPadding: const EdgeInsets.only(top: 10, left: 10),
                             onTap: () {
                               Navigator.pushNamed(
                                 context,
@@ -276,10 +256,7 @@ class _ProfileState extends State<Profile> {
                               books[index].title ?? '',
                               overflow: TextOverflow.clip,
                               maxLines: 1,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelLarge!
-                                  .copyWith(fontWeight: FontWeight.w700),
+                              style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.w700),
                             ),
                             subtitle: Text(
                               books[index].category ?? '',
@@ -305,8 +282,7 @@ class _ProfileState extends State<Profile> {
               FutureBuilder(
                 future: FirebaseFirestore.instance
                     .collection('books')
-                    .where('bookMarkedUsers',
-                        arrayContains: FirebaseAuth.instance.currentUser!.uid)
+                    .where('bookMarkedUsers', arrayContains: FirebaseAuth.instance.currentUser!.uid)
                     .get(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -314,15 +290,12 @@ class _ProfileState extends State<Profile> {
                       child: CircularProgressIndicator(),
                     );
                   }
-                  List<Book> books = snapshot.data!.docs
-                      .map((e) => Book.fromMap(e.data()))
-                      .toList();
+                  List<Book> books = snapshot.data!.docs.map((e) => Book.fromMap(e.data())).toList();
                   return ListView.builder(
                     itemCount: books.length,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                         child: Container(
                           decoration: BoxDecoration(
                             color: AppColors.filledColor,
@@ -336,8 +309,7 @@ class _ProfileState extends State<Profile> {
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: ListTile(
-                            contentPadding:
-                                const EdgeInsets.only(top: 10, left: 10),
+                            contentPadding: const EdgeInsets.only(top: 10, left: 10),
                             onTap: () {
                               Navigator.pushNamed(
                                 context,
@@ -361,10 +333,7 @@ class _ProfileState extends State<Profile> {
                               books[index].title ?? '',
                               overflow: TextOverflow.clip,
                               maxLines: 1,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelLarge!
-                                  .copyWith(fontWeight: FontWeight.w700),
+                              style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.w700),
                             ),
                             subtitle: Text(
                               books[index].category ?? '',

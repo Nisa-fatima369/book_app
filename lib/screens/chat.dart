@@ -36,7 +36,7 @@ class _ChatState extends State<Chat> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               final map = snapshot.data!.data();
-              final user = AuthData.fromMap(map);
+              final user = UserModel.fromMap(map);
               return Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -76,7 +76,7 @@ class _ChatState extends State<Chat> {
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
               child: StreamBuilder(
                 stream: FirebaseFirestore.instance
-                    .collection('chatRooms')
+                    .collection('chats')
                     .doc(widget.chatRoom[0])
                     .collection('messages')
                     .orderBy('time', descending: false)
@@ -138,7 +138,11 @@ class _ChatState extends State<Chat> {
                   GestureDetector(
                     onTap: () async {
                       if (messageTextController.text.isNotEmpty) {
-                        await FirebaseFirestore.instance.collection('chatRooms').doc(widget.chatRoom[0]).collection('messages').add({
+                        await FirebaseFirestore.instance.collection('chats').doc(widget.chatRoom[0]).update({
+                          'lastMessage': messageTextController.text,
+                          'lastMessageTime': DateTime.now(),
+                        });
+                        await FirebaseFirestore.instance.collection('chats').doc(widget.chatRoom[0]).collection('messages').add({
                           'message': messageTextController.text,
                           'sender': FirebaseAuth.instance.currentUser!.uid,
                           'receiver': widget.chatRoom[1],

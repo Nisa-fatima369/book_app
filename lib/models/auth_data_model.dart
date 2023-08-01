@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class AuthData {
+import 'package:flutter/foundation.dart';
+
+class UserModel {
   final String fullName;
   final String? profileUrl;
   final String userID;
@@ -9,7 +11,8 @@ class AuthData {
   final String dept;
   final String semester;
   final String phoneNo;
-  AuthData({
+  final List<String>? groups;
+  UserModel({
     required this.fullName,
     this.profileUrl,
     required this.userID,
@@ -17,9 +20,10 @@ class AuthData {
     required this.dept,
     required this.semester,
     required this.phoneNo,
+    this.groups,
   });
 
-  AuthData copyWith({
+  UserModel copyWith({
     String? fullName,
     String? profileUrl,
     String? userID,
@@ -27,8 +31,9 @@ class AuthData {
     String? dept,
     String? semester,
     String? phoneNo,
+    List<String>? groups,
   }) {
-    return AuthData(
+    return UserModel(
       fullName: fullName ?? this.fullName,
       profileUrl: profileUrl ?? this.profileUrl,
       userID: userID ?? this.userID,
@@ -36,6 +41,7 @@ class AuthData {
       dept: dept ?? this.dept,
       semester: semester ?? this.semester,
       phoneNo: phoneNo ?? this.phoneNo,
+      groups: groups ?? this.groups,
     );
   }
 
@@ -48,11 +54,12 @@ class AuthData {
       'dept': dept,
       'semester': semester,
       'phoneNo': phoneNo,
+      'groups': groups,
     };
   }
 
-  factory AuthData.fromMap(Map<String, dynamic> map) {
-    return AuthData(
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
       fullName: map['fullName'] as String,
       profileUrl: map['profileUrl'] != null ? map['profileUrl'] as String : null,
       userID: map['userID'] as String,
@@ -60,20 +67,21 @@ class AuthData {
       dept: map['dept'] as String,
       semester: map['semester'] as String,
       phoneNo: map['phoneNo'] as String,
+      groups: map['groups'] != null ? List<String>.from((map['groups'] as List<String>)) : [],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory AuthData.fromJson(String source) => AuthData.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UserModel.fromJson(String source) => UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'AuthData(fullName: $fullName, profileUrl: $profileUrl, userID: $userID, regNo: $regNo, dept: $dept, semester: $semester, phoneNo: $phoneNo)';
+    return 'UserModel(fullName: $fullName, profileUrl: $profileUrl, userID: $userID, regNo: $regNo, dept: $dept, semester: $semester, phoneNo: $phoneNo, groups: $groups)';
   }
 
   @override
-  bool operator ==(covariant AuthData other) {
+  bool operator ==(covariant UserModel other) {
     if (identical(this, other)) return true;
 
     return other.fullName == fullName &&
@@ -82,11 +90,19 @@ class AuthData {
         other.regNo == regNo &&
         other.dept == dept &&
         other.semester == semester &&
-        other.phoneNo == phoneNo;
+        other.phoneNo == phoneNo &&
+        listEquals(other.groups, groups);
   }
 
   @override
   int get hashCode {
-    return fullName.hashCode ^ profileUrl.hashCode ^ userID.hashCode ^ regNo.hashCode ^ dept.hashCode ^ semester.hashCode ^ phoneNo.hashCode;
+    return fullName.hashCode ^
+        profileUrl.hashCode ^
+        userID.hashCode ^
+        regNo.hashCode ^
+        dept.hashCode ^
+        semester.hashCode ^
+        phoneNo.hashCode ^
+        groups.hashCode;
   }
 }

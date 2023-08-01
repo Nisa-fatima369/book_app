@@ -27,9 +27,9 @@ class Messages extends StatelessWidget {
       ),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
-              .collection('chatRooms')
+              .collection('chats')
               .where(
-                'participants',
+                'members',
                 arrayContains: FirebaseAuth.instance.currentUser!.uid,
               )
               .snapshots(),
@@ -45,11 +45,11 @@ class Messages extends StatelessWidget {
                       future: FirebaseFirestore.instance.collection('users').doc(receiver).get(),
                       builder: (context, AsyncSnapshot asyncSnapshot) {
                         if (asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.done) {
-                          AuthData receverData = AuthData.fromMap(asyncSnapshot.data!.data()!);
+                          UserModel receverData = UserModel.fromMap(asyncSnapshot.data!.data()!);
                           return ListTile(
                             onTap: () {
-                              Navigator.pushNamed(context, Routes.chat, arguments: [snapshot.data!.docs[index]['id'], receiver]);
-                              print(receverData.profileUrl);
+                              Navigator.pushNamed(context, Routes.chat, arguments: [snapshot.data!.docs[index]['chatId'], receiver]);
+                           
                             },
                             leading: CircleAvatar(
                               backgroundColor: AppColors.filledColor,
@@ -68,59 +68,23 @@ class Messages extends StatelessWidget {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            subtitle: FutureBuilder(
-                              builder: (context, AsyncSnapshot snapshot) {
-                                if (snapshot.hasData) {
-                                  return Text(
-                                    snapshot.data!.docs[0]['message'],
-                                    style: const TextStyle(
-                                      color: AppColors.selectedColor,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  );
-                                }
-                                return Shimmer.fromColors(
-                                  baseColor: Colors.grey[300]!,
-                                  highlightColor: Colors.grey[100]!,
-                                  child: const Padding(padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10), child: Text('Loading...')),
-                                );
-                              },
-                              future: FirebaseFirestore.instance
-                                  .collection('chatRooms')
-                                  .doc(snapshot.data!.docs[index]['id'])
-                                  .collection('messages')
-                                  .orderBy('time', descending: true)
-                                  .limit(1)
-                                  .get(),
+                            subtitle: Text(
+                              snapshot.data!.docs[0]['lastMessage'],
+                              style: const TextStyle(
+                                color: AppColors.selectedColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
-                            trailing: FutureBuilder(
-                              builder: (context, AsyncSnapshot snapshot) {
-                                if (snapshot.hasData) {
-                                  return Text(
-                                    snapshot.data!.docs[0]['time'].toDate().hour.toString() +
-                                        ':' +
-                                        snapshot.data!.docs[0]['time'].toDate().minute.toString(),
-                                    style: const TextStyle(
-                                      color: AppColors.selectedColor,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  );
-                                }
-                                return Shimmer.fromColors(
-                                  baseColor: Colors.grey[300]!,
-                                  highlightColor: Colors.grey[100]!,
-                                  child: const Padding(padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10), child: Text('Loading...')),
-                                );
-                              },
-                              future: FirebaseFirestore.instance
-                                  .collection('chatRooms')
-                                  .doc(snapshot.data!.docs[index]['id'])
-                                  .collection('messages')
-                                  .orderBy('time', descending: true)
-                                  .limit(1)
-                                  .get(),
+                            trailing: Text(
+                              snapshot.data!.docs[0]['lastMessageTime'].toDate().hour.toString() +
+                                  ':' +
+                                  snapshot.data!.docs[0]['lastMessageTime'].toDate().minute.toString(),
+                              style: const TextStyle(
+                                color: AppColors.selectedColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           );
                         }
