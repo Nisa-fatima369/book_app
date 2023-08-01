@@ -227,7 +227,7 @@ class _DescriptionState extends State<Description> {
                               .where(
                               
                                 'participants',
-                                arrayContainsAny: [ FirebaseAuth.instance.currentUser!.uid, widget.book.userId],
+                                arrayContains: [ FirebaseAuth.instance.currentUser!.uid, widget.book.userId],
                               )
                                
                               .get()
