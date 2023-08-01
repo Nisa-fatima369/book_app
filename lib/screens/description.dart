@@ -10,15 +10,17 @@ import 'package:flutter/material.dart';
 
 class Description extends StatefulWidget {
   final Book book;
-  const Description({super.key, required this.book, });
-
+  const Description({
+    super.key,
+    required this.book,
+  });
 
   @override
   State<Description> createState() => _DescriptionState();
 }
 
 class _DescriptionState extends State<Description> {
-      AuthData? user;
+  AuthData? user;
   @override
   void initState() {
     updateLastViewed();
@@ -143,7 +145,7 @@ class _DescriptionState extends State<Description> {
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
                         final map = snapshot.data!.data();
-                          user = AuthData.fromMap(map);
+                        user = AuthData.fromMap(map);
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -222,14 +224,17 @@ class _DescriptionState extends State<Description> {
 
                           await FirebaseFirestore.instance
                               .collection('chatRooms')
-                              .where('sender', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                              .where('receiver', isEqualTo: widget.book.userId)
+                              .where(
+                                'participants',
+                                arrayContains:  [FirebaseAuth.instance.currentUser!.uid, widget.book.userId],
+                              )
+                               
                               .get()
                               .then((value) async {
                             if (value.docs.isNotEmpty) {
                               final map = value.docs.first.data();
                               final chatRoomId = value.docs.first.id;
-                              Navigator.pushNamed(context, Routes.chat, arguments:[ chatRoomId,  widget.book.userId ]);
+                              Navigator.pushNamed(context, Routes.chat, arguments: [chatRoomId, widget.book.userId]);
                             } else {
                               DocumentReference chatRoomRef = FirebaseFirestore.instance.collection('chatRooms').doc();
                               await FirebaseFirestore.instance.collection('chatRooms').doc(chatRoomRef.id).set({
@@ -237,7 +242,7 @@ class _DescriptionState extends State<Description> {
                                 'sender': FirebaseAuth.instance.currentUser!.uid,
                                 'receiver': widget.book.userId,
                                 'receiverName': user!.fullName,
-                                'receiverProfileUrl': user!.profileUrl,                               
+                                'receiverProfileUrl': user!.profileUrl,
                                 'createdAt': DateTime.now().toIso8601String(),
                                 'id': chatRoomRef.id,
                               }).then((value) async {
