@@ -225,8 +225,9 @@ class _DescriptionState extends State<Description> {
                           await FirebaseFirestore.instance
                               .collection('chatRooms')
                               .where(
+                              
                                 'participants',
-                                arrayContains:  [FirebaseAuth.instance.currentUser!.uid, widget.book.userId],
+                                arrayContainsAny: [ FirebaseAuth.instance.currentUser!.uid, widget.book.userId],
                               )
                                
                               .get()
